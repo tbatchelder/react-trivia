@@ -1,7 +1,5 @@
-import React from "react";
-
-const StartGame = () => {
-  return <div>StartGame</div>;
-};
+function StartGame() {
+  return <div className="visible">StartGame</div>;
+}
 
 export default StartGame;
