@@ -1,8 +1,26 @@
+import { useState } from "react";
+
+const questionsDone = [0];
+let currentPos = 0;
+
+interface QuestionType {
+  id: number;
+  question: string;
+  answer1: string;
+  answer2: string;
+  answer3: string;
+  answer4: string;
+  correct: number;
+  score: number;
+  story: string;
+}
+
 function Questions() {
-  const questionList = [
+  const questionList: QuestionType[] = [
     {
+      id: 1,
       question: "What is a mimic?",
-      answer1: "A non-speaking pantomimer.",
+      answer1: "A mime.",
       answer2: "Someone that imitates you.",
       answer3: "A carnivorous chest.",
       answer4: "A miniature microphone.",
@@ -12,6 +30,7 @@ function Questions() {
         "An interesting one.  This is not only from the Dungeons & Dragons game I loved playing as a teen but could also be used to descibe me.  I look like a person but tend to act ... well ... differently and am therefore often misunderstood.  So, I've become good at playing a part, usually a wallflower.",
     },
     {
+      id: 2,
       question:
         "What is the name of the villian in the Dungeons & Dragons cartoon series?",
       answer1: "Voldamort",
@@ -24,6 +43,7 @@ function Questions() {
         "Growing up, this was one of the best cartoons of its time.  Kids getting pulled into an alternate dimension where they got to play their D&D characters.  Just one of many things I wish was possible in reality because at least there, I would have fit in better than here. And best of all, there was little Uni running around.",
     },
     {
+      id: 3,
       question: "What is the full name of the SDF-1?",
       answer1: "Super Deformed Figure-1",
       answer2: "Super Dimensional Fortress-1",
@@ -35,6 +55,7 @@ function Questions() {
         "Robotech.  The tv series that got me started in my love of anime.  A unique series at the time in that it told a complete story and wasn't afraid to show the death of a loved character.  ",
     },
     {
+      id: 4,
       question: "Who is the King of the Monsters?",
       answer1: "Simba the lion.",
       answer2: "A king cobra.",
@@ -45,6 +66,7 @@ function Questions() {
       story: "story",
     },
     {
+      id: 5,
       question: "What are the names of the main characters in Genshin Impact?",
       answer1: "Aether and Lumine",
       answer2: "Simba and Scar",
@@ -55,6 +77,7 @@ function Questions() {
       story: "story",
     },
     {
+      id: 6,
       question:
         "What name is given to the character shown in the game background?",
       answer1: "The Lady Amalethia",
@@ -66,6 +89,7 @@ function Questions() {
       story: "story",
     },
     {
+      id: 7,
       question: "How many Fred Saberhagen Swords of Power are there?",
       answer1: "One.",
       answer2: "Three",
@@ -76,6 +100,7 @@ function Questions() {
       story: "story",
     },
     {
+      id: 8,
       question:
         "In the Piers Anthony comedy series, what state does Xanth overlap?",
       answer1: "California",
@@ -87,6 +112,7 @@ function Questions() {
       story: "story",
     },
     {
+      id: 9,
       question: "Which of the following is NOT a type of Transformer?",
       answer1: "Autobots",
       answer2: "Predacons",
@@ -97,6 +123,7 @@ function Questions() {
       story: "story",
     },
     {
+      id: 10,
       question: "An alicorn is _________.",
       answer1: "the horn of a unicorn.",
       answer2: "a winged unicorn.",
@@ -107,6 +134,7 @@ function Questions() {
       story: "story",
     },
     {
+      id: 12,
       question: "In what movie is the Death Blossom attack used?",
       answer1: "Pokemon",
       answer2: "Star Wars",
@@ -117,6 +145,7 @@ function Questions() {
       story: "story",
     },
     {
+      id: 12,
       question: "Who played the character Jack in Legend?",
       answer1: "Bill Murry",
       answer2: "Steven Seagal",
@@ -127,6 +156,7 @@ function Questions() {
       story: "story",
     },
     {
+      id: 13,
       question:
         "In what sci-fi tv series did an alliance of races fight The Shadows?",
       answer1: "Star Trek",
@@ -138,6 +168,7 @@ function Questions() {
       story: "story",
     },
     {
+      id: 14,
       question: "What anime series featured a Moon Pricess?",
       answer1: "Sailor Moon",
       answer2: "Moon Over Miami.",
@@ -148,6 +179,7 @@ function Questions() {
       story: "story",
     },
     {
+      id: 15,
       question: "Which of the following are not Blizzard games?",
       answer1: "Starcraft",
       answer2: "Minecraft",
@@ -158,6 +190,7 @@ function Questions() {
       story: "story",
     },
     {
+      id: 16,
       question: "Which of the following is not science?",
       answer1: "Astrology",
       answer2: "Chemistry",
@@ -168,6 +201,7 @@ function Questions() {
       story: "story",
     },
     {
+      id: 17,
       question: "Ludo, the lovable, loyal monster is in what movie?",
       answer1: "Shrek",
       answer2: "Home",
@@ -178,6 +212,7 @@ function Questions() {
       story: "story",
     },
     {
+      id: 18,
       question: "What are the mecha in Endless Waltz known as?",
       answer1: "Priest",
       answer2: "Gundams",
@@ -188,6 +223,7 @@ function Questions() {
       story: "story",
     },
     {
+      id: 19,
       question: "What drawing style is used to design buildings?",
       answer1: "Line drawing",
       answer2: "Caricature",
@@ -198,6 +234,7 @@ function Questions() {
       story: "story",
     },
     {
+      id: 20,
       question: "What is the name of unicorns the firstborn?",
       answer1: "Assallum",
       answer2: "Amaltheia",
@@ -209,19 +246,64 @@ function Questions() {
     },
   ];
 
-  // questionList.map((answers, question) => <div>{q}</div>);
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const randomQuestionIndex = () => {
+    let newIndex = Math.floor(Math.random() * questionList.length);
+    console.log(newIndex);
+    while (questionsDone.includes(newIndex)) {
+      newIndex = Math.floor(Math.random() * questionList.length);
+    }
+    console.log(newIndex);
+    questionsDone.push(newIndex);
+    console.log(questionsDone);
+    return newIndex;
+  };
+
+  const handleNavigation = (direction: string) => {
+    console.log(questionsDone, currentPos, direction);
+    if (direction == "B" && currentPos == 0) {
+      setActiveIndex(questionsDone[0]);
+    } else if (direction == "B") {
+      console.log("here1");
+      currentPos -= 1;
+      setActiveIndex(questionsDone[currentPos]);
+    } else if (direction == "F" && currentPos + 1 < questionsDone.length) {
+      console.log("here2", currentPos, questionsDone);
+      currentPos += 1;
+      setActiveIndex(questionsDone[currentPos]);
+    } else {
+      console.log("here");
+      currentPos += 1;
+      setActiveIndex(randomQuestionIndex());
+    }
+    console.log("here3");
+  };
 
   return (
     <>
-      <div className="visible">
-        <div>{questionList[0][0]}</div>
-        <div>{questionList[0][1]}</div>
-        <div>{questionList[0][2]}</div>
-        <div>{questionList[0][3]}</div>
-        <div>{questionList[0][4]}</div>
-        <div>{questionList[0][7]}</div>
-        <div>Previous</div>
-        <div>Next</div>
+      <div className="questionBox">
+        {questionList.map((currentQuestion, index) => (
+          <div
+            key={index}
+            data-answer={currentQuestion.correct}
+            data-score={currentQuestion.score}
+            style={{ visibility: index == activeIndex ? "visible" : "hidden" }}
+          >
+            <div className="question">{currentQuestion.question}</div>
+            <button className="answer">{currentQuestion.answer1}</button>
+            <button className="answer">{currentQuestion.answer2}</button>
+            <button className="answer">{currentQuestion.answer3}</button>
+            <button className="answer">{currentQuestion.answer4}</button>
+            <p className="story">{currentQuestion.story}</p>
+            <button className="previous" onClick={() => handleNavigation("B")}>
+              Previous
+            </button>
+            <button className="next" onClick={() => handleNavigation("F")}>
+              Next
+            </button>
+          </div>
+        ))}
       </div>
     </>
   );
