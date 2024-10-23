@@ -33,7 +33,7 @@
 .start {
   font-size: 2.5em;
   font-weight: bold;
-  
+
   color:crimson;
   text-align: center;
   text-shadow: 2px 2px black, 0 0 40px yellow, 0 0 5px goldenrod;
@@ -43,4 +43,46 @@
   border: 1px solid darkblue;
   padding: 0.4em 0.8em;
   cursor: pointer;
+  transition-duration: 0.4s;
+}
+.start:hover {
+  background-color:cyan;
+}
+.start:active {
+  box-shadow: 0 0px 6px white;
+  transform: translateY(4px);
+}
+
+/* .container {
+
+} */
+
+.question {
+  font-size: 2em;
+  font-family:Georgia, 'Times New Roman', Times, serif;
+  font-style: italic;
+  text-align: center;
+  padding-bottom: 30px;
+}
+.answer {
+padding: 10px;
+font-size: 1.25em;
+border: 1px solid darkblue;
+border-radius: 15px;
+box-shadow: 2px 2px 4px white;
+cursor: pointer;
+transition-duration: 0.4s;
+}
+.answer:hover {
+  background-color:chocolate;
+}
+.answer:active {
+  box-shadow: 0 0px 6px white;
+  transform: translateY(4px);
+}
+.right {
+  background-color:darkgreen;
+}
+.wrong {
+background-color: crimson;
 }

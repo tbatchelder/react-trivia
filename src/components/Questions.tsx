@@ -20,7 +20,7 @@ function Questions() {
     {
       id: 1,
       question: "What is a mimic?",
-      answer1: "A mime.",
+      answer1: "Another name for a leprechaun.",
       answer2: "Someone that imitates you.",
       answer3: "A carnivorous chest.",
       answer4: "A miniature microphone.",
@@ -280,6 +280,17 @@ function Questions() {
     console.log("here3");
   };
 
+  const [buttonClass, setButtonClass] = useState(null);
+  // const [showStory, setShowStory] = useState(false);
+
+  const isCorrect = (index: number, guess: number) => {
+    if (questionList[index].correct == guess) {
+      setButtonClass(true);
+    } else {
+      setButtonClass(false);
+    }
+  };
+
   return (
     <>
       <div className="questionBox">
@@ -291,7 +302,9 @@ function Questions() {
             style={{ visibility: index == activeIndex ? "visible" : "hidden" }}
           >
             <div className="question">{currentQuestion.question}</div>
-            <button className="answer">{currentQuestion.answer1}</button>
+            <button onClick={() => isCorrect(index, 1)}>
+              {currentQuestion.answer1}
+            </button>
             <button className="answer">{currentQuestion.answer2}</button>
             <button className="answer">{currentQuestion.answer3}</button>
             <button className="answer">{currentQuestion.answer4}</button>
