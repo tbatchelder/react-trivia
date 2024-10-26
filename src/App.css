@@ -1,77 +1,106 @@
+/* CSS for components */
+/* Main grid container */
+.container {
+  display: grid;
+  grid-template-columns: 15% 15% 1fr 15% 15%;
+  grid-template-rows: 90px 1fr 90px 60px 60px 60px;
+
+  background-color: blueviolet;
+}
+
+/* CSS for Welcome component */
 .welcome {
   font-size: 4em;
   font-weight: 700;
   font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-
-  color: crimson;
-
   text-align: center;
+  color: crimson;
 
   -webkit-mask-image: url("./assets/grit.png");
   mask-image: url("./assets/grit.png");
+
+  grid-column-start: 1;
+  grid-column-end: 6;
+  grid-row-start: 1;
 }
 
+/* CSS for Instructions component */
 .startTitle {
   text-align: center;
+
+  grid-column-start: 1;
+  grid-column-end: 6;
+  grid-row-start: 2;
 }
 .qoute {
   font-style: italic;
 }
-.instruction {
-  margin: 10px 10% 30px;
+.startTitle > h2 {
+  text-decoration: underline;
 }
+.instruction {
+  margin: 10px 10% 20px;
+}
+
+/* Global CSS for grid area */
 .visible {
-  visibility: visible;
+  display: block;
 }
 .hidden {
-  visibility: hidden;
+  display: none;
 }
 .center {
-  margin: auto;
-  width: 25%;
+  align-self: center;
+  justify-self: center;
+
+  grid-column-start: 1;
+  grid-column-end: 6;
+  grid-row-start: 3;
 }
+/* CSS for the start button */
 .start {
   font-size: 2.5em;
   font-weight: bold;
-
-  color:crimson;
   text-align: center;
   text-shadow: 2px 2px black, 0 0 40px yellow, 0 0 5px goldenrod;
-  background-color:cornflowerblue;
+  color: crimson;
+
+  background-color: cornflowerblue;
+
+  border: 1px solid darkblue;
   border-radius: 25px;
   box-shadow: 2px 2px 6px white;
-  border: 1px solid darkblue;
+
   padding: 0.4em 0.8em;
+  width: 300px;
+
   cursor: pointer;
   transition-duration: 0.4s;
 }
 .start:hover {
-  background-color:cyan;
+  background-color: cyan;
 }
 .start:active {
   box-shadow: 0 0px 6px white;
   transform: translateY(4px);
 }
-
-/* .container {
-
-} */
-
+/* CSS for the question */
 .question {
   font-size: 2em;
-  font-family:Georgia, 'Times New Roman', Times, serif;
+  font-family: Georgia, 'Times New Roman', Times, serif;
   font-style: italic;
   text-align: center;
   padding-bottom: 30px;
 }
+/* CSS for the answer button */
 .answer {
-padding: 10px;
-font-size: 1.25em;
-border: 1px solid darkblue;
-border-radius: 15px;
-box-shadow: 2px 2px 4px white;
-cursor: pointer;
-transition-duration: 0.4s;
+  padding: 10px;
+  font-size: 1.25em;
+  border: 1px solid darkblue;
+  border-radius: 15px;
+  box-shadow: 2px 2px 4px white;
+  cursor: pointer;
+  transition-duration: 0.4s;
 }
 .answer:hover {
   background-color:chocolate;
@@ -80,6 +109,28 @@ transition-duration: 0.4s;
   box-shadow: 0 0px 6px white;
   transform: translateY(4px);
 }
+/* CSS to place the answer buttons */
+.r1c2 {
+  grid-column-start: 2;
+  grid-column-end: 3;
+  grid-row-start: 2;
+}
+.r1c4 {
+  grid-column-start: 4;
+  grid-column-end: 5;
+  grid-row-start: 2;
+}
+.r2c2 {
+  grid-column-start: 2;
+  grid-column-end: 3;
+  grid-row-start: 3;
+}
+.r2c4 {
+  grid-column-start: 4;
+  grid-column-end: 5;
+  grid-row-start: 3;
+}
+
 .right {
   background-color:darkgreen;
 }

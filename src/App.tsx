@@ -10,10 +10,12 @@ function App() {
 
   return (
     <>
-      <Welcome />
-      <Instructions />
-      <StartGame />
-      <Questions />
+      <div className="container">
+        <Welcome />
+        <Instructions />
+        <StartGame />
+        <Questions />
+      </div>
     </>
   );
 }

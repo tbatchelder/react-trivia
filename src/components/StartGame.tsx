@@ -8,16 +8,10 @@ function StartGame() {
   }
 
   return (
-    <div className="container">
-      <div className="center">
-        <button
-          className="start visible"
-          onClick={() => startGame()}
-          style={{ visibility: showme ? "visible" : "hidden" }}
-        >
-          Start Game
-        </button>
-      </div>
+    <div className="center" style={{ display: showme ? "block" : "none" }}>
+      <button className="start" onClick={() => startGame()}>
+        Start Game
+      </button>
     </div>
   );
 }

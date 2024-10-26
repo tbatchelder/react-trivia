@@ -265,49 +265,54 @@ function Questions() {
     if (direction == "B" && currentPos == 0) {
       setActiveIndex(questionsDone[0]);
     } else if (direction == "B") {
-      console.log("here1");
       currentPos -= 1;
       setActiveIndex(questionsDone[currentPos]);
     } else if (direction == "F" && currentPos + 1 < questionsDone.length) {
-      console.log("here2", currentPos, questionsDone);
       currentPos += 1;
       setActiveIndex(questionsDone[currentPos]);
     } else {
-      console.log("here");
       currentPos += 1;
       setActiveIndex(randomQuestionIndex());
     }
-    console.log("here3");
   };
 
-  const [buttonClass, setButtonClass] = useState(null);
+  // const [buttonClass, setButtonClass] = useState(null);
   // const [showStory, setShowStory] = useState(false);
 
-  const isCorrect = (index: number, guess: number) => {
-    if (questionList[index].correct == guess) {
-      setButtonClass(true);
-    } else {
-      setButtonClass(false);
-    }
-  };
+  // const isCorrect = (index: number, guess: number) => {
+  //   if (questionList[index].correct == guess) {
+  //     setButtonClass(true);
+  //   } else {
+  //     setButtonClass(false);
+  //   }
+  // }; onClick={() => isCorrect(index, 1)}
 
   return (
     <>
-      <div className="questionBox">
+      <div
+        className="questionBox"
+        // style={{ display: showme ? "none" : "block" }}
+      >
         {questionList.map((currentQuestion, index) => (
           <div
             key={index}
             data-answer={currentQuestion.correct}
             data-score={currentQuestion.score}
-            style={{ visibility: index == activeIndex ? "visible" : "hidden" }}
+            style={{ display: index == activeIndex ? "block" : "none" }}
           >
             <div className="question">{currentQuestion.question}</div>
-            <button onClick={() => isCorrect(index, 1)}>
-              {currentQuestion.answer1}
-            </button>
-            <button className="answer">{currentQuestion.answer2}</button>
-            <button className="answer">{currentQuestion.answer3}</button>
-            <button className="answer">{currentQuestion.answer4}</button>
+            <div className="r1c2">
+              <button className="answer">{currentQuestion.answer1}</button>
+            </div>
+            <div className="r1c4">
+              <button className="answer">{currentQuestion.answer2}</button>
+            </div>
+            <div className="r2c2">
+              <button className="answer">{currentQuestion.answer3}</button>
+            </div>
+            <div className="r2c4">
+              <button className="answer">{currentQuestion.answer4}</button>
+            </div>
             <p className="story">{currentQuestion.story}</p>
             <button className="previous" onClick={() => handleNavigation("B")}>
               Previous
