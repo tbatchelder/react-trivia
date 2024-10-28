@@ -250,15 +250,24 @@ function Questions() {
 
   const randomQuestionIndex = () => {
     let newIndex = Math.floor(Math.random() * questionList.length);
-    console.log(newIndex);
     while (questionsDone.includes(newIndex)) {
       newIndex = Math.floor(Math.random() * questionList.length);
     }
-    console.log(newIndex);
     questionsDone.push(newIndex);
-    console.log(questionsDone);
     return newIndex;
   };
+
+  // const randomArray = () => {
+  //   let currentIndex = questionList.length;
+  //   while (currentIndex != 0) {
+  //     const randomIndex = Math.floor(Math.random() * currentIndex);
+  //     currentIndex--;
+  //     [questionList[currentIndex], questionList[randomIndex]] = [
+  //       questionList[randomIndex],
+  //       questionList[currentIndex],
+  //     ];
+  //   }
+  // };
 
   const handleNavigation = (direction: string) => {
     console.log(questionsDone, currentPos, direction);
@@ -276,53 +285,103 @@ function Questions() {
     }
   };
 
-  // const [buttonClass, setButtonClass] = useState(null);
+  // const [isCorrect, setIsCorrect] = useState("");
+  const [selected, setSelected] = useState(false);
   // const [showStory, setShowStory] = useState(false);
 
-  // const isCorrect = (index: number, guess: number) => {
-  //   if (questionList[index].correct == guess) {
-  //     setButtonClass(true);
-  //   } else {
-  //     setButtonClass(false);
-  //   }
-  // }; onClick={() => isCorrect(index, 1)}
+  // const handleCorrect = (index: number, guess: number) => {
+  const Button ()
+    if (questionList[index].correct == guess) {
+      // setIsCorrect("green");
+      // setShowStory(true);
+      // return "green";
+      return (
+        <button
+          className="answer"
+          style={{
+            backgroundColor: selected ? handleCorrect(index, 1) : "",
+          }}
+          onClick={() => handleSelected()}
+        >
+          {currentQuestion.answer1}
+        </button>
+      );
+    // } else {
+    //   // setIsCorrect("red");
+    //   return "red";
+    // }
+  };
+
+  const handleSelected = () => {
+    setSelected(true);
+  };
 
   return (
     <>
-      <div
-        className="questionBox"
-        // style={{ display: showme ? "none" : "block" }}
-      >
-        {questionList.map((currentQuestion, index) => (
-          <div
-            key={index}
-            data-answer={currentQuestion.correct}
-            data-score={currentQuestion.score}
-            style={{ display: index == activeIndex ? "block" : "none" }}
-          >
+      {questionList.map((currentQuestion, index) => (
+        <div
+          key={index}
+          // data-answer={currentQuestion.correct}
+          // data-score={currentQuestion.score}
+          style={{ display: index == activeIndex ? "block" : "none" }}
+        >
+          <div className="questionGrid">
             <div className="question">{currentQuestion.question}</div>
             <div className="r1c2">
-              <button className="answer">{currentQuestion.answer1}</button>
+              <Button({currentQuestion.answer2}) />
             </div>
             <div className="r1c4">
-              <button className="answer">{currentQuestion.answer2}</button>
+              <button
+                className="answer"
+                style={{
+                  backgroundColor: selected ? handleCorrect(index, 2) : "",
+                }}
+                onClick={() => handleSelected}
+              >
+                {currentQuestion.answer2}
+              </button>
             </div>
             <div className="r2c2">
-              <button className="answer">{currentQuestion.answer3}</button>
+              <button
+                className="answer"
+                style={{
+                  backgroundColor: selected ? handleCorrect(index, 3) : "",
+                }}
+                onClick={() => handleSelected}
+              >
+                {currentQuestion.answer3}
+              </button>
             </div>
             <div className="r2c4">
-              <button className="answer">{currentQuestion.answer4}</button>
+              <button
+                className="answer"
+                style={{
+                  backgroundColor: selected ? handleCorrect(index, 4) : "",
+                }}
+                onClick={() => handleSelected}
+              >
+                {currentQuestion.answer4}
+              </button>
             </div>
-            <p className="story">{currentQuestion.story}</p>
-            <button className="previous" onClick={() => handleNavigation("B")}>
-              Previous
-            </button>
-            <button className="next" onClick={() => handleNavigation("F")}>
-              Next
-            </button>
+            <div className="r3">
+              <p className="story hidden">{currentQuestion.story}</p>
+            </div>
+            <div className="r4c2">
+              <button
+                className="previous"
+                onClick={() => handleNavigation("B")}
+              >
+                Previous
+              </button>
+            </div>
+            <div className="r4c4">
+              <button className="next" onClick={() => handleNavigation("F")}>
+                Next
+              </button>
+            </div>
           </div>
-        ))}
-      </div>
+        </div>
+      ))}
     </>
   );
 }
