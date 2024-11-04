@@ -1,3 +1,4 @@
+// Doesn't do anything special - just returns the instructions
 function Instructions() {
   return (
     <>

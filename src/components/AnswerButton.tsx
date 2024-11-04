@@ -1,59 +1,74 @@
-import { useState } from "react";
+// This component will break each of the answers down to a single button which will have its own method calls
 
-interface AnswerButton {
-  surveyQuestion: object;
-  currentQuestion: number;
-  setCurrentQuestion: object;
-  setScore: object;
-  score: number;
+interface Props {
   answer: string;
-  correct: string;
 }
 
-const AnswerButton = ({
-  answer,
-  correct,
-  currentQuestion,
-  setCurrentQuestion,
-  setScore,
-  score,
-}: AnswerButton) => {
-  const defaultColor = "blue";
-  const correctColor = "green";
-  const incorrectColor = "red";
-
-  const [color, setColor] = useState(defaultColor);
-
-  function handleClick() {
-    if (answer === correct) {
-      setColor(correctColor);
-      setScore(score + 1);
-    } else {
-      setColor(incorrectColor);
-    }
-
-    setTimeout(() => {
-      setCurrentQuestion(currentQuestion + 1);
-      setColor(defaultColor);
-    }, 1000);
-  }
-
+function AnswerButton({ answer }: Props) {
   return (
-    <div>
-      <button
-        style={{
-          backgroundColor: color,
-          margin: "5px",
-          padding: "15px",
-        }}
-        onClick={() => handleClick()}
-      >
-        {answer}
-      </button>
-    </div>
+    <>
+      <button>{answer}</button>
+    </>
   );
-};
+}
+
 export default AnswerButton;
+// import { useState } from "react";
+
+// interface AnswerButton {
+//   surveyQuestion: object;
+//   currentQuestion: number;
+//   setCurrentQuestion: object;
+//   setScore: object;
+//   score: number;
+//   answer: string;
+//   correct: string;
+// }
+
+// const AnswerButton = ({
+//   answer,
+//   correct,
+//   currentQuestion,
+//   setCurrentQuestion,
+//   setScore,
+//   score,
+// }: AnswerButton) => {
+//   const defaultColor = "blue";
+//   const correctColor = "green";
+//   const incorrectColor = "red";
+
+//   const [color, setColor] = useState(defaultColor);
+
+//   function handleClick() {
+//     if (answer === correct) {
+//       setColor(correctColor);
+//       setScore(score + 1);
+//     } else {
+//       setColor(incorrectColor);
+//     }
+
+//     setTimeout(() => {
+//       setCurrentQuestion(currentQuestion + 1);
+//       setColor(defaultColor);
+//     }, 1000);
+//   }
+
+//   return (
+//     <div>
+//       <button
+//         style={{
+//           backgroundColor: color,
+//           margin: "5px",
+//           padding: "15px",
+//         }}
+//         onClick={() => handleClick()}
+//       >
+//         {answer}
+//       </button>
+//     </div>
+//   );
+// };
+// export default AnswerButton;
 
 // import { useState } from "react";
 
