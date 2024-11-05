@@ -1,6 +1,8 @@
 // This component contains all of the details for the question:
 //   The question itself, the answers, the correct answer, the score, the story and the next/previous buttons
 
+// In order to re-render when changes are made, we need state
+import { useState } from "react";
 // In order to use the other components, we need to import them
 import AnswerBlock from "./AnswerBlock";
 
@@ -28,7 +30,7 @@ const questionList: QuestionType[] = [
       "A carnivorous chest.",
       "A miniature microphone.",
     ],
-    correct: 3,
+    correct: 2,
     score: 5,
     story:
       "An interesting one.  This is not only from the Dungeons & Dragons game I loved playing as a teen but could also be used to descibe me.  I look like a person but tend to act ... well ... differently and am therefore often misunderstood.  So, I've become good at playing a part, usually a wallflower.",
@@ -39,7 +41,7 @@ const questionList: QuestionType[] = [
 //     question:
 //       "What is the name of the villian in the Dungeons & Dragons cartoon series?",
 //     answers: ["Voldamort", "Vladamir", "Vermathax", "Venger"],
-//     correct: 4,
+//     correct: 3,
 //     score: 10,
 //     story:
 //       "Growing up, this was one of the best cartoons of its time.  Kids getting pulled into an alternate dimension where they got to play their D&D characters.  Just one of many things I wish was possible in reality because at least there, I would have fit in better than here. And best of all, there was little Uni running around.",
@@ -53,7 +55,7 @@ const questionList: QuestionType[] = [
 //       "Silver Dueling Falcion-1",
 //       "Sonic Dinner Fork-1",
 //     ],
-//     correct: 2,
+//     correct: 1,
 //     score: 10,
 //     story:
 //       "Robotech.  The tv series that got me started in my love of anime.  A unique series at the time in that it told a complete story and wasn't afraid to show the death of a loved character.  ",
@@ -67,7 +69,7 @@ const questionList: QuestionType[] = [
 //       "A black widow spider.",
 //       "Godzilla.",
 //     ],
-//     correct: 4,
+//     correct: 3,
 //     score: 5,
 //     story: "story",
 //   },
@@ -80,7 +82,7 @@ const questionList: QuestionType[] = [
 //       "Rocky and Bullwinkle",
 //       "Rick and Morty",
 //     ],
-//     correct: 1,
+//     correct: 0,
 //     score: 15,
 //     story: "story",
 //   },
@@ -94,7 +96,7 @@ const questionList: QuestionType[] = [
 //       "Queen Malevalent",
 //       "Princess Peach",
 //     ],
-//     correct: 1,
+//     correct: 0,
 //     score: 5,
 //     story: "story",
 //   },
@@ -102,7 +104,7 @@ const questionList: QuestionType[] = [
 //     id: 7,
 //     question: "How many Fred Saberhagen Swords of Power are there?",
 //     answers: ["One", "Three", "Seven", "Twelve."],
-//     correct: 4,
+//     correct: 3,
 //     score: 5,
 //     story: "story",
 //   },
@@ -111,7 +113,7 @@ const questionList: QuestionType[] = [
 //     question:
 //       "In the Piers Anthony comedy series, what state does Xanth overlap?",
 //     answers: ["California", "Florida", "Alaska", "Hawaii"],
-//     correct: 2,
+//     correct: 1,
 //     score: 5,
 //     story: "story",
 //   },
@@ -119,7 +121,7 @@ const questionList: QuestionType[] = [
 //     id: 9,
 //     question: "Which of the following is NOT a type of Transformer?",
 //     answers: ["Autobots", "Predacons", "Dinobots", "Gobots"],
-//     correct: 4,
+//     correct: 3,
 //     score: 5,
 //     story: "story",
 //   },
@@ -132,7 +134,7 @@ const questionList: QuestionType[] = [
 //       "a type of corn.",
 //       "a medical problem with a foot.",
 //     ],
-//     correct: 1,
+//     correct: 0,
 //     score: 5,
 //     story: "story",
 //   },
@@ -140,7 +142,7 @@ const questionList: QuestionType[] = [
 //     id: 12,
 //     question: "In what movie is the Death Blossom attack used?",
 //     answers: ["Pokemon", "Star Wars", "The Last Starfighter", "Dragonball"],
-//     correct: 3,
+//     correct: 2,
 //     score: 5,
 //     story: "story",
 //   },
@@ -148,7 +150,7 @@ const questionList: QuestionType[] = [
 //     id: 12,
 //     question: "Who played the character Jack in Legend?",
 //     answers: ["Bill Murry", "Steven Seagal", "Tom Cruise", "Bruce Willis"],
-//     correct: 3,
+//     correct: 2,
 //     score: 5,
 //     story: "story",
 //   },
@@ -157,7 +159,7 @@ const questionList: QuestionType[] = [
 //     question:
 //       "In what sci-fi tv series did an alliance of races fight The Shadows?",
 //     answers: ["Star Trek", "Buck Rogers", "Battlestar Galactica", "Babylon 5"],
-//     correct: 4,
+//     correct: 3,
 //     score: 5,
 //     story: "story",
 //   },
@@ -170,7 +172,7 @@ const questionList: QuestionType[] = [
 //       "My Little Pony",
 //       "Strawberry Shortcake",
 //     ],
-//     correct: 1,
+//     correct: 0,
 //     score: 5,
 //     story: "story",
 //   },
@@ -178,7 +180,7 @@ const questionList: QuestionType[] = [
 //     id: 15,
 //     question: "Which of the following are not Blizzard games?",
 //     answers: ["Starcraft", "Minecraft", "Warcraft", "Diablo"],
-//     correct: 2,
+//     correct: 1,
 //     score: 5,
 //     story: "story",
 //   },
@@ -186,7 +188,7 @@ const questionList: QuestionType[] = [
 //     id: 16,
 //     question: "Which of the following is not science?",
 //     answers: ["Astrology", "Chemistry", "Biology", "Physics"],
-//     correct: 1,
+//     correct: 0,
 //     score: 5,
 //     story: "story",
 //   },
@@ -194,7 +196,7 @@ const questionList: QuestionType[] = [
 //     id: 17,
 //     question: "Ludo, the lovable, loyal monster is in what movie?",
 //     answers: ["Shrek", "Home", "Ghostbusters", "Labyrinth"],
-//     correct: 4,
+//     correct: 3,
 //     score: 5,
 //     story: "story",
 //   },
@@ -202,7 +204,7 @@ const questionList: QuestionType[] = [
 //     id: 18,
 //     question: "What are the mecha in Endless Waltz known as?",
 //     answers: ["Priest", "Gundams", "Cyborgs", "Gadgets"],
-//     correct: 2,
+//     correct: 1,
 //     score: 5,
 //     story: "story",
 //   },
@@ -210,7 +212,7 @@ const questionList: QuestionType[] = [
 //     id: 19,
 //     question: "What drawing style is used to design buildings?",
 //     answers: ["Line drawing", "Caricature", "Geometry", "Architecture"],
-//     correct: 4,
+//     correct: 3,
 //     score: 5,
 //     story: "story",
 //   },
@@ -218,7 +220,7 @@ const questionList: QuestionType[] = [
 //     id: 20,
 //     question: "What is the name of the firstborn unicorn?",
 //     answers: ["Assallum", "Amaltheia", "Arboron", "Andrameda"],
-//     correct: 1,
+//     correct: 0,
 //     score: 5,
 //     story: "story",
 //   },
@@ -227,22 +229,31 @@ const questionList: QuestionType[] = [
 // This function needs to take the questions, break them down into their individual parts and then pass those parts
 // down to the AnswerBlock and AnswerButton components for futher breakdown
 // First, it will map out the objects for each index in the question array and pass them to questionDetails along with the index #
+// We will need to pass the index # of the list along in order to synch everything
 function Questions() {
+  // Used to display the active question
+  // const [activeIndex, setActiveIndex] = useState(0);
+
   return (
     <>
-      {questionList.map((questionDetails, index) => (
+      {questionList.map((currentQuestionDetails, index) => (
         <>
-          <h2>{questionDetails.id}</h2>
-          <h3>{questionDetails.question}</h3>
-          <AnswerBlock key={index} answerList={questionDetails.answers} />
-          <h4>{questionDetails.correct}</h4>
-          <h4>{questionDetails.score}</h4>
-          <h4>{questionDetails.story}</h4>
+          <div
+            key={index}
+            className="questionGrid"
+            // style={{ display: index == activeIndex ? "block" : "none" }}
+          >
+            <div className="question">{currentQuestionDetails.question}</div>
+            <AnswerBlock
+              answerList={currentQuestionDetails.answers}
+              correctIndex={currentQuestionDetails.correct}
+            />
+            {/* <h4>{currentQuestionDetails.correct}</h4>
+            <h4>{currentQuestionDetails.score}</h4>
+            <h4>{currentQuestionDetails.story}</h4> */}
+          </div>
         </>
       ))}
-      {/* {questionList[0].answers.map((answer: string) => (
-        <button className="answer">{answer}</button>
-      ))} */}
     </>
   );
 }
@@ -250,101 +261,6 @@ function Questions() {
 export default Questions;
 
 // import { useState } from "react";
-// import AnswerBlock from "./AnswerBlock";
-
-// const surveyQuestions = [
-//   {
-//     question: "Which of these involves scheduling and managing flights?",
-//     answers: [
-//       "Airline Booking",
-//       "Door to Door Pollster",
-//       "Internet Routing",
-//       "Social Networks",
-//     ],
-//     correctAnswer: "Airline Booking",
-//   },
-//   {
-//     question: "What is used to direct data across networks?",
-//     answers: [
-//       "Electric Metering",
-//       "Internet Routing",
-//       "Library Indexing",
-//       "Furniture Assembly",
-//     ],
-//     correctAnswer: "Internet Routing",
-//   },
-//   {
-//     question: "Which job involves surveying people about their opinions?",
-//     answers: ["Chef", "Door to Door Pollster", "Bank Teller", "Architect"],
-//     correctAnswer: "Door to Door Pollster",
-//   },
-//   {
-//     question: "Where do people primarily connect and share information online?",
-//     answers: ["Social Networks", "Library", "Television", "Grocery Store"],
-//     correctAnswer: "Social Networks",
-//   },
-//   {
-//     question: "Which of these involves managing check-ins and seats?",
-//     answers: [
-//       "Airline Booking",
-//       "School Admissions",
-//       "Grocery Inventory",
-//       "Event Planning",
-//     ],
-//     correctAnswer: "Airline Booking",
-//   },
-//   {
-//     question: "What system do routers use to direct traffic?",
-//     answers: [
-//       "Traffic Signals",
-//       "Internet Routing",
-//       "Mail Service",
-//       "GPS Mapping",
-//     ],
-//     correctAnswer: "Internet Routing",
-//   },
-//   {
-//     question: "Who might ask you questions on your doorstep?",
-//     answers: [
-//       "Electrician",
-//       "Door to Door Pollster",
-//       "Teacher",
-//       "Delivery Driver",
-//     ],
-//     correctAnswer: "Door to Door Pollster",
-//   },
-//   {
-//     question: "Where do people create profiles and connect online?",
-//     answers: [
-//       "Social Networks",
-//       "Banking Apps",
-//       "Search Engines",
-//       "Job Boards",
-//     ],
-//     correctAnswer: "Social Networks",
-//   },
-//   {
-//     question: "Which option allows you to reserve seats on a plane?",
-//     answers: [
-//       "Airline Booking",
-//       "Restaurant Reservation",
-//       "Library Checkout",
-//       "Car Rental",
-//     ],
-//     correctAnswer: "Airline Booking",
-//   },
-//   {
-//     question:
-//       "What type of network helps people to find friends and communities?",
-//     answers: [
-//       "Social Networks",
-//       "Private Intranet",
-//       "ISP Provider",
-//       "Public Park",
-//     ],
-//     correctAnswer: "Social Networks",
-//   },
-// ];
 
 // function Questions() {
 //   const [currentQuestion, setCurrentQuestion] = useState(0);

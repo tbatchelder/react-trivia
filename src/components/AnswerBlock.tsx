@@ -2,17 +2,24 @@
 
 import AnswerButton from "./AnswerButton";
 
+// The interface will tell the component what Type the variable should be that it is accepting
 interface Props {
   answerList: Array<string>;
+  correctIndex: number;
 }
 
-function AnswerBlock({ answerList }: Props) {
-  console.log(answerList);
-  // const answerList = ["Assallum", "Amaltheia", "Arboron", "Andrameda"];
+function AnswerBlock({ answerList, correctIndex }: Props) {
   return (
     <>
-      {answerList.map((answer: string) => (
-        <AnswerButton answer={answer} />
+      {answerList.map((answer, index) => (
+        <>
+          <AnswerButton
+            key={index}
+            answer={answer}
+            gridCell={index}
+            correct={correctIndex}
+          />
+        </>
       ))}
     </>
   );

@@ -1,29 +1,63 @@
 // This component will break each of the answers down to a single button which will have its own method calls
 
+import { useState } from "react";
+
 interface Props {
   answer: string;
+  gridCell: number;
+  correct: number;
 }
 
-function AnswerButton({ answer }: Props) {
+function AnswerButton({ answer, gridCell, correct }: Props) {
+  // Method to determine the grid to place the button into so everything is laid out nicely
+  // This will be called by the className on each individual button
+  function defineGridCell(gridCell: number) {
+    switch (gridCell) {
+      case 0:
+        return "r1c2";
+      case 1:
+        return "r1c4";
+      case 2:
+        return "r2c2";
+      case 3:
+        return "r2c4";
+    }
+  }
+
+  // List of background colors for the buttons
+  const color = ["blue", "green", "red"];
+
+  // UseState which will control the re-rendering of the button background color
+  const [answerColor, setAnswerColor] = useState(color[0]);
+
+  // Method which will control the state changes for the button background color
+  // This will be called by each button individually when they are clicked
+  function handleClick(response: number) {
+    if (response == correct) {
+      setAnswerColor(color[1]);
+    } else {
+      setAnswerColor(color[2]);
+    }
+  }
+
   return (
     <>
-      <button>{answer}</button>
+      <button
+        className={defineGridCell(gridCell)}
+        style={{
+          backgroundColor: answerColor,
+          margin: "5px",
+          padding: "15px",
+        }}
+        onClick={() => handleClick(gridCell)}
+      >
+        {answer}
+      </button>
     </>
   );
 }
 
 export default AnswerButton;
-// import { useState } from "react";
-
-// interface AnswerButton {
-//   surveyQuestion: object;
-//   currentQuestion: number;
-//   setCurrentQuestion: object;
-//   setScore: object;
-//   score: number;
-//   answer: string;
-//   correct: string;
-// }
 
 // const AnswerButton = ({
 //   answer,
@@ -68,31 +102,3 @@ export default AnswerButton;
 //     </div>
 //   );
 // };
-// export default AnswerButton;
-
-// import { useState } from "react";
-
-// function AnswerButton({ answer }) {
-//   const color = ["blue", "green", "red"];
-
-//   const [answerColor, setAnswerColor] = useState(color[0]);
-
-//   function handleClick(answer: string) {
-//     console.log(answer);
-//     setAnswerColor(color[1]);
-//   }
-//   return (
-//     <>
-//       <button
-//         className="answer"
-//         key={answer}
-//         style={{ backgroundColor: answerColor }}
-//         onClick={() => handleClick(answer)}
-//       >
-//         {answer}
-//       </button>
-//     </>
-//   );
-// }
-
-// export default AnswerButton;
