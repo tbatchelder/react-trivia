@@ -3,12 +3,19 @@
 import AnswerButton from "./AnswerButton";
 
 // The interface will tell the component what Type the variable should be that it is accepting
+// These variables are coming from the mapped question list from Questions
+//   they are then brought into the function as variables using the : Props notation
+//   Note that the list of answers is brought in as an Array which details that the elements IN the array are strings
 interface Props {
   answerList: Array<string>;
-  correctIndex: number;
+  correctAnswer: number;
 }
 
-function AnswerBlock({ answerList, correctIndex }: Props) {
+// With the list of answers now in the component, we can map each individual answer out to a button
+// We'll also need to pass along the correct answer so that each button knows if it's the correct one or not
+// Using the index, we'll assign each answer to a grid cell for formatting
+// Again, each variable passed will need an interface on AnswerButton
+function AnswerBlock({ answerList, correctAnswer }: Props) {
   return (
     <>
       {answerList.map((answer, index) => (
@@ -17,7 +24,7 @@ function AnswerBlock({ answerList, correctIndex }: Props) {
             key={index}
             answer={answer}
             gridCell={index}
-            correct={correctIndex}
+            correct={correctAnswer}
           />
         </>
       ))}

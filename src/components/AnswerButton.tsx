@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 
+// This interface gives the Types of variable being passed from AnswerBlock, again using : Props
 interface Props {
   answer: string;
   gridCell: number;
@@ -14,13 +15,13 @@ function AnswerButton({ answer, gridCell, correct }: Props) {
   function defineGridCell(gridCell: number) {
     switch (gridCell) {
       case 0:
-        return "r1c2";
+        return "answer r1c2";
       case 1:
-        return "r1c4";
+        return "answer r1c4";
       case 2:
-        return "r2c2";
+        return "answer r2c2";
       case 3:
-        return "r2c4";
+        return "answer r2c4";
     }
   }
 
@@ -32,6 +33,7 @@ function AnswerButton({ answer, gridCell, correct }: Props) {
 
   // Method which will control the state changes for the button background color
   // This will be called by each button individually when they are clicked
+  // If the gridcell value matches the correct answer: green; otherwise: red
   function handleClick(response: number) {
     if (response == correct) {
       setAnswerColor(color[1]);
@@ -58,47 +60,3 @@ function AnswerButton({ answer, gridCell, correct }: Props) {
 }
 
 export default AnswerButton;
-
-// const AnswerButton = ({
-//   answer,
-//   correct,
-//   currentQuestion,
-//   setCurrentQuestion,
-//   setScore,
-//   score,
-// }: AnswerButton) => {
-//   const defaultColor = "blue";
-//   const correctColor = "green";
-//   const incorrectColor = "red";
-
-//   const [color, setColor] = useState(defaultColor);
-
-//   function handleClick() {
-//     if (answer === correct) {
-//       setColor(correctColor);
-//       setScore(score + 1);
-//     } else {
-//       setColor(incorrectColor);
-//     }
-
-//     setTimeout(() => {
-//       setCurrentQuestion(currentQuestion + 1);
-//       setColor(defaultColor);
-//     }, 1000);
-//   }
-
-//   return (
-//     <div>
-//       <button
-//         style={{
-//           backgroundColor: color,
-//           margin: "5px",
-//           padding: "15px",
-//         }}
-//         onClick={() => handleClick()}
-//       >
-//         {answer}
-//       </button>
-//     </div>
-//   );
-// };

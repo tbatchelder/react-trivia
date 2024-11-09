@@ -96,7 +96,7 @@
 }
 .questionGrid {
   display: grid;
-  grid-template-columns: 15% 15% 1fr 15% 15%;
+  grid-template-columns: 15% 20% 1fr 20% 15%;
   grid-template-rows: 90px 90px 90px 90px 90px;
 
   background-color: brown;
@@ -128,10 +128,12 @@
   transition-duration: 0.4s;
 }
 .answer:hover {
-  background-color:chocolate;
+  border: 2px solid white;
+  color:goldenrod;
+  font-weight: 700;
 }
 .answer:active {
-  box-shadow: 0 0px 6px white;
+  box-shadow: 0 0px 15px black;
   transform: translateY(4px);
 }
 
@@ -170,13 +172,6 @@
   grid-column-start: 4;
   grid-column-end: 5;
   grid-row-start: 5;
-}
-
-.right {
-  background-color:darkgreen;
-}
-.wrong {
-background-color: crimson;
 }
 
 /* CSS for previous/next */
