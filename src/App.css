@@ -99,6 +99,9 @@
   grid-template-columns: 15% 20% 1fr 20% 15%;
   grid-template-rows: 90px 90px 90px 90px 90px;
 
+  justify-content: center;
+  align-content: center;
+  
   background-color: brown;
 }
 .question {
@@ -167,11 +170,25 @@
   grid-column-start: 2;
   grid-column-end: 3;
   grid-row-start: 5;
+
+  align-self: center;
+  justify-self: center;
+}
+.r4c3 {
+  grid-column-start: 3;
+  grid-column-end: 4;
+  grid-row-start: 5;
+
+  align-self: center;
+  justify-self: center;
 }
 .r4c4 {
   grid-column-start: 4;
   grid-column-end: 5;
   grid-row-start: 5;
+
+  align-self: center;
+  justify-self: center;
 }
 
 /* CSS for previous/next */
@@ -185,4 +202,14 @@
   box-shadow: 2px 2px 4px white;
   cursor: pointer;
   transition-duration: 0.4s;
+}
+
+.questionCounter {
+  font-size: 1.25em;
+  padding-right: 20px;
+}
+
+.theScore {
+  font-size: 1.25em;
+  padding-left: 20px;
 }

@@ -1,6 +1,8 @@
 // This component will contain all of the answers which will pass that down to the individual button
 
 import AnswerButton from "./AnswerButton";
+// Import Dispatch in order to pass a useState function down to lower levels
+// import { Dispatch } from "react";
 
 // The interface will tell the component what Type the variable should be that it is accepting
 // These variables are coming from the mapped question list from Questions
@@ -9,6 +11,7 @@ import AnswerButton from "./AnswerButton";
 interface Props {
   answerList: Array<string>;
   correctAnswer: number;
+  onUpdateStory: (setOrReset: number) => void;
 }
 
 // With the list of answers now in the component, we can map each individual answer out to a button
@@ -19,14 +22,12 @@ function AnswerBlock({ answerList, correctAnswer }: Props) {
   return (
     <>
       {answerList.map((answer, index) => (
-        <>
-          <AnswerButton
-            key={index}
-            answer={answer}
-            gridCell={index}
-            correct={correctAnswer}
-          />
-        </>
+        <AnswerButton
+          key={index}
+          answer={answer}
+          gridCell={index}
+          correct={correctAnswer}
+        />
       ))}
     </>
   );
