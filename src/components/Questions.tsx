@@ -371,14 +371,16 @@ function Questions() {
               </button>
             </div>
             <div className="r4c3">
-              <span className="questionCounter">
+              <span className="theScore">
                 Question {currentPos + 1} of {questionList.length}
               </span>
+              <br />
               <span className="theScore">
                 Possible Score: {currentQuestionDetails.score[guesses]} out of{" "}
                 {currentQuestionDetails.score[0]}
               </span>
-              <span>Total Score: {totalScore}</span>
+              <br />
+              <span className="theScore">Total Score: {totalScore}</span>
             </div>
             <div className="r4c4">
               <button

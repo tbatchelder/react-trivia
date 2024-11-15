@@ -13,7 +13,7 @@
   grid-template-columns: 15% 15% 1fr 15% 15%;
   grid-template-rows: 90px 1fr 90px;
 
-  background-color: blueviolet;
+  background-color:darkolivegreen;
 }
 
 /* CSS for Welcome component */
@@ -22,7 +22,7 @@
   font-weight: 700;
   font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
   text-align: center;
-  color: crimson;
+  color:darkgoldenrod;
 
   -webkit-mask-image: url("./assets/grit.png");
   mask-image: url("./assets/grit.png");
@@ -102,7 +102,7 @@
   justify-content: center;
   align-content: center;
   
-  background-color: brown;
+  background-color:lightseagreen;
 }
 .question {
   font-size: 2em;
@@ -204,12 +204,27 @@
   transition-duration: 0.4s;
 }
 
-.questionCounter {
-  font-size: 1.25em;
-  padding-right: 20px;
+.previous:hover {
+  border: 2px solid white;
+  color: goldenrod;
+  font-weight: 700;
+}
+
+.previous:active {
+  box-shadow: 0 0px 15px black;
+  transform: translateY(4px);
+}
+.next:hover {
+  border: 2px solid white;
+  color: goldenrod;
+  font-weight: 700;
+}
+.next:active {
+  box-shadow: 0 0px 15px black;
+  transform: translateY(4px);
 }
 
 .theScore {
   font-size: 1.25em;
-  padding-left: 20px;
+  padding: auto;
 }
