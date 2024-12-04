@@ -5,7 +5,7 @@
 import { useState } from "react";
 // In order to use the other components, we need to import them
 // import AnswerBlock from "./AnswerBlock";
-import AnswerButton from "./AnswerButton";
+import Question from "./Question";
 
 // In order for the other components to understand what data type should be expected, an interface is needed
 // which will detail each of list items by their type
@@ -263,16 +263,21 @@ let currentPos = 0;
 // Then we pass the answers and the correct answer down to AnswerBlock
 //   this will require an interface on AnswerBlock so that it knows the Types of variables it should be accepting
 function Questions() {
+  // Make sure all useState commands are first as React will not compile properly with them scattered about.
   // Used to display the active question
   // It does this by initially setting the first question to 0 and hence the state to 0
   // It send this to the div container and changes the CSS from none to block if the index = the active index value
   const [activeIndex, setActiveIndex] = useState(0);
 
-  // This controls the Previous and Next buttons
-  // It will check to make sure the buttons remain within the length of the questions listing
-  //   by updating the state of the question container object
-  // If the next button is within the limit, generate a random question to view next
-  const handleNavigation = (direction: string, scoreUpdate: number) => {
+  // In order to update the score, we need to keep track of how many guesses are made per question
+  // This will have to be reset to 0 for each new question
+  const [guesses, setGuesses] = useState(0);
+  const [totalScore, setTotalScore] = useState(0);
+
+  // Set the story to visible if the correct answer is quessed
+  const [showStory, setShowStory] = useState(0);
+
+  const createRandomQuesionList = () => {
     // First, let's check to see if a random order has been generated; if not, make one
     if (randomQuestionList.length != questionList.length) {
       // We need to set the type of value contained with the temp array holder - use : type or Array<type>
@@ -295,21 +300,16 @@ function Questions() {
         tempStarter.splice(thisIndex, 1);
       }
     }
+  };
 
-    // Once we have a random list set up, we can figure out how to move backwards and forwards thru it.
-    // For each new question, we'll also have to make sure the story flag is flipped back as well.
-    // Also, each new question should reset the quesses counter
-    if (direction == "B" && currentPos == 0) {
-      setActiveIndex(randomQuestionList[0]);
-    } else if (direction == "B") {
-      currentPos -= 1;
-      setActiveIndex(randomQuestionList[currentPos]);
-    } else if (
-      direction == "F" &&
-      currentPos + 1 >= randomQuestionList.length
-    ) {
-      setActiveIndex(randomQuestionList[currentPos]);
-    } else {
+  // This controls the Previous and Next buttons
+  // It will check to make sure the buttons remain within the length of the questions listing
+  //   by updating the state of the question container object
+
+  // For each new question, we'll have to make sure the story flag is flipped back so it is not displayed.
+  // Also, each new question should reset the quesses counter.
+  const handleNext = (scoreUpdate: number) => {
+    if (currentPos + 1 < randomQuestionList.length) {
       currentPos += 1;
       setActiveIndex(randomQuestionList[currentPos]);
       setShowStory(0);
@@ -318,24 +318,40 @@ function Questions() {
     }
   };
 
-  // In order to update the score, we need to keep track of how many guesses are made per question
-  // This will have to be reset to 0 for each new question
-  const [guesses, setGuesses] = useState(0);
-  const [totalScore, setTotalScore] = useState(0);
+  // The Previous button doesn't need to change anything.
+  const handlePrevious = () => {
+    if (currentPos != 0) {
+      currentPos -= 1;
+      setActiveIndex(randomQuestionList[currentPos]);
+    }
+  };
 
-  // Set the story to visible if the correct answer is quessed
-  const [showStory, setShowStory] = useState(0);
+  createRandomQuesionList();
 
   return (
     <>
-      {questionList.map((currentQuestionDetails, index) => (
+      {/* {questionList.map((currentQuestionDetails, index) => (
         <div
           key={index}
           style={{ display: index == activeIndex ? "block" : "none" }}
-        >
-          <div className="questionGrid">
-            <div className="question">{currentQuestionDetails.question}</div>
-            {/* 
+        > */}
+      <Question
+        question={questionList[activeIndex]}
+        handleNext={handleNext}
+        handlePrevious={handlePrevious}
+        guesses={guesses}
+        setGuesses={setGuesses}
+        showStory={showStory}
+        setShowStory={setShowStory}
+        currentPos={currentPos}
+        length={questionList.length}
+        possibleScore={questionList[activeIndex].score[guesses]}
+        maxScore={questionList[activeIndex].score[0]}
+        totalScore={totalScore}
+      />
+      {/* <div className="questionGrid"> */}
+      {/* <div className="question">{currentQuestionDetails.question}</div> */}
+      {/* 
               Ok - looks like we were trying to be TOO fancy - AnswerBlock component not needed as an intermediate to
               the AnswerButton block after all to just map out the answers; we can do that within this component which
               will make passing down the score and quesses work the way the internet is saying they should work.
@@ -345,7 +361,7 @@ function Questions() {
               Using the index, we'll assign each answer to a grid cell for formatting
               Again, each variable passed will need an interface on AnswerButton 
             */}
-            {currentQuestionDetails.answers.map((answer, index) => (
+      {/* {currentQuestionDetails.answers.map((answer, index) => (
               <AnswerButton
                 key={index}
                 answer={answer}
@@ -355,22 +371,19 @@ function Questions() {
                 guesses={guesses}
                 setGuesses={setGuesses}
               />
-            ))}
-            <div
+            ))} */}
+      {/* <div
               className="r3"
               style={{ display: showStory ? "block" : "none" }}
             >
               {currentQuestionDetails.story}
-            </div>
-            <div className="r4c2">
-              <button
-                className="previous"
-                onClick={() => handleNavigation("B", 0)}
-              >
+            </div> */}
+      {/* <div className="r4c2">
+              <button className="previous" onClick={() => handlePrevious()}>
                 Previous
               </button>
-            </div>
-            <div className="r4c3">
+            </div> */}
+      {/* <div className="r4c3">
               <span className="theScore">
                 Question {currentPos + 1} of {questionList.length}
               </span>
@@ -381,20 +394,15 @@ function Questions() {
               </span>
               <br />
               <span className="theScore">Total Score: {totalScore}</span>
-            </div>
-            <div className="r4c4">
-              <button
-                className="next"
-                onClick={() =>
-                  handleNavigation("F", currentQuestionDetails.score[guesses])
-                }
-              >
+            </div> */}
+      {/* <div className="r4c4">
+              <button className="next" onClick={() => handleNext()}>
                 Next
               </button>
-            </div>
-          </div>
-        </div>
-      ))}
+            </div> */}
+      {/* </div> */}
+      {/* </div> */}
+      {/* ))} */}
     </>
   );
 }
