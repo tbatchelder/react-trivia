@@ -1,24 +1,7 @@
-// This creates a Start Game button and then starts the game itself
-// Upon clicking, it will hide itself and display the first of the questions
-
-// Additionally, after the JoC refactoring session, new things came to light on how to build a React site
-// As part of that, we will re-work and move things around to reduce code further
-//    Therefore, the question list will be brought into here were it should render only once(?) I hope
-
-// Ok, the Question list was brought into here.  This will stop it from being re-rendered every time
-// a question is answered and will therefor remove the need to check if the randomization has been
-// done already.  Since the questions are here, the randomizer was also brought in so that it can
-// execute only once but still be passed down to lower component.
-
-// We'll need a state control for some actions so it gets imported
-// Since all of the interfaces were moved to types.ts, that also needs to be imported
-import { useState } from "react";
+import { useMemo } from "react";
 import { QuestionType } from "../types";
-import Questions from "./Questions";
 
 // Create a const to hold all of the details about each question
-// Oddly, now that the interface is removed, we need to tell the question list that the type is
-//   a list by adding [] to the type interface usage.
 const questionList: QuestionType[] = [
   {
     id: 1,
@@ -175,7 +158,7 @@ const questionList: QuestionType[] = [
     question: "What anime series featured a Moon Princess?",
     answers: [
       "Sailor Moon",
-      "Moon Over Miami",
+      "Moon Over Miami.",
       "My Little Pony",
       "Strawberry Shortcake",
     ],
@@ -238,67 +221,31 @@ const questionList: QuestionType[] = [
   },
 ];
 
-// We also need to do the same thing here by telling it the list is an array of numbers
-// This will hold the randomized list of questions with question 0 always being first.
 const randomQuestionList: number[] = [0];
 
 const createRandomQuesionList = () => {
-  // We need to set the type of value contained with the temp array holder - use : type or Array<type>
-  // We want to start at 1 since we already have 0 in the list
-  const tempStarter: number[] = [];
-  for (let i = 1; i < questionList.length; i++) {
-    tempStarter.push(i);
-  }
-  // Cycle thru the temp array until its empty
-  while (tempStarter.length > 0) {
-    // Generate a random number
-    const thisIndex: number = Math.floor(Math.random() * tempStarter.length);
-    // Pull out the value at the random index
-    const thisValue: number = tempStarter[thisIndex];
-    // Append the value to the masterlist
-    randomQuestionList.push(thisValue);
-    // Remove the value from the list
-    tempStarter.splice(thisIndex, 1);
+  // First, let's check to see if a random order has been generated; if not, make one
+  if (randomQuestionList.length != questionList.length) {
+    // We need to set the type of value contained with the temp array holder - use : type or Array<type>
+    // We want to start at 1 since we already have 0 in the list
+    const tempStarter: number[] = [];
+    for (let i = 1; i < questionList.length; i++) {
+      tempStarter.push(i);
+    }
+    // Cycle thru the temp array until its empty
+    while (tempStarter.length > 0) {
+      // Generate a random number
+      const thisIndex: number = Math.floor(Math.random() * tempStarter.length);
+      // Pull out the value at the random index
+      const thisValue: number = tempStarter[thisIndex];
+      // Append the value to the masterlist
+      randomQuestionList.push(thisValue);
+      // Remove the value from the list
+      tempStarter.splice(thisIndex, 1);
+    }
   }
 };
 
-// Now that the base is set up, we can start the game function
-function StartGame() {
-  // Holds the state of the Start button - True = shown; False = hidden
-  // Again, we'll take a bit of advice and update this to a boolean so it's clear its a T/F switch
-  const [showme, setShowMe] = useState<boolean>(true);
+createRandomQuesionList();
 
-  // When called by the Start button, flips the state of the Start button
-  function startGame() {
-    // Here, we'll call the function to randomize our questions since there seems to be no better place for it
-    // Putting it anywhere else in this function actually causes it to be called multiple times
-    // so, by tying it to the button click, it will only fire once like intended
-    createRandomQuesionList();
-
-    setShowMe(false);
-  }
-
-  return (
-    <>
-      {/* The div style is used to control the visibility of the button by make it part of the DOM or not */}
-      <div className="center" style={{ display: showme ? "block" : "none" }}>
-        <button className="start" onClick={() => startGame()}>
-          Start Game
-        </button>
-      </div>
-      {/* Below is the question block - it is controlled in the same manner as the Start button but in reverse order */}
-      <div
-        className="questionBox"
-        style={{ display: showme ? "none" : "block" }}
-      >
-        {/* Since the question list is now at this level, we need to pass it and the random list down */}
-        <Questions
-          questionList={questionList}
-          randomQuestionList={randomQuestionList}
-        />
-      </div>
-    </>
-  );
-}
-
-export default StartGame;
+export default questionList;

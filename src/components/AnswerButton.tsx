@@ -1,20 +1,19 @@
 // This component will break each of the answers down to a single button which will have its own method calls
 
-import { SetStateAction, useState } from "react";
-// Here, we need Dispatch to allow the passing in of a useState setter
-import { Dispatch } from "react";
+import { useState } from "react";
+import { AnswerType } from "../types";
 
 // This interface gives the Types of variable being passed from AnswerBlock, again using : Props
 // Dispatch is then set up in the Props and passed into the function with the Type of variable we should return
 //   to the original variable
-interface Props {
-  answer: string;
-  gridCell: number;
-  correct: number;
-  setShowStory: Dispatch<SetStateAction<number>>;
-  guesses: number;
-  setGuesses: Dispatch<SetStateAction<number>>;
-}
+// interface Props {
+//   answer: string;
+//   gridCell: number;
+//   correct: number;
+//   setShowStory: Dispatch<SetStateAction<number>>;
+//   guesses: number;
+//   setGuesses: Dispatch<SetStateAction<number>>;
+// }
 
 function AnswerButton({
   answer,
@@ -23,7 +22,7 @@ function AnswerButton({
   setShowStory,
   guesses,
   setGuesses,
-}: Props) {
+}: AnswerType) {
   // Method to determine the grid to place the button into so everything is laid out nicely
   // This will be called by the className on each individual button
   function defineGridCell(gridCell: number) {
@@ -54,7 +53,7 @@ function AnswerButton({
   function handleClick(response: number) {
     if (response == correct) {
       setAnswerColor(color[1]);
-      setShowStory(1);
+      setShowStory(true);
       if (guesses < 3 && answerColor != "green") {
         setGuesses(guesses);
       }
