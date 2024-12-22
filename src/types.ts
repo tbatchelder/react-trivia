@@ -24,10 +24,18 @@ export interface QuestionType {
 }
 
 export interface AnswerType {
+  currentPos: number;
+  index: number;
   answer: string;
   gridCell: number;
   correct: number;
-  setShowStory: Dispatch<SetStateAction<boolean>>;
   guesses: number;
   setGuesses: Dispatch<SetStateAction<number>>;
+  possibleScore: number;
+  totalScore: number;
+  setTotalScore: Dispatch<SetStateAction<number>>;
+  setShowStory: Dispatch<SetStateAction<boolean>>;
+  answersSelected: Array<boolean>;
+  wasCorrectlyAnswered: boolean;
+  setWasCorrectlyAnswered: Dispatch<SetStateAction<boolean>>;
 }

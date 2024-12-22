@@ -2,47 +2,44 @@
 
 import { useState } from "react";
 import { AnswerType } from "../types";
-
-// This interface gives the Types of variable being passed from AnswerBlock, again using : Props
-// Dispatch is then set up in the Props and passed into the function with the Type of variable we should return
-//   to the original variable
-// interface Props {
-//   answer: string;
-//   gridCell: number;
-//   correct: number;
-//   setShowStory: Dispatch<SetStateAction<number>>;
-//   guesses: number;
-//   setGuesses: Dispatch<SetStateAction<number>>;
-// }
+import { isCorrect } from "../utils/helpers";
 
 function AnswerButton({
   answer,
   gridCell,
   correct,
-  setShowStory,
   guesses,
   setGuesses,
+  possibleScore,
+  totalScore,
+  setTotalScore,
+  setShowStory,
+  answersSelected,
+  wasCorrectlyAnswered,
+  setWasCorrectlyAnswered,
 }: AnswerType) {
+  // UseState which will control the re-rendering of the button background color
+  const [answerColor, setAnswerColor] = useState<string>("blue");
+
   // Method to determine the grid to place the button into so everything is laid out nicely
   // This will be called by the className on each individual button
   function defineGridCell(gridCell: number) {
-    switch (gridCell) {
-      case 0:
-        return "answer r1c2";
-      case 1:
-        return "answer r1c4";
-      case 2:
-        return "answer r2c2";
-      case 3:
-        return "answer r2c4";
-    }
+    const gridColumn: number = Math.floor(gridCell / 2) + 1;
+    const gridRow: number = ((gridCell % 2) + 1) * 2;
+
+    return "answer r" + gridColumn + "c" + gridRow;
   }
+  console.log(answersSelected);
+  // function previouslyAnswered(bloop: Array<Array<boolean>>) {
+  //   // console.log(bloop[currentPos][index]);
+  //   // if (answersSelected[currentPos][index] && isCorrect(gridCell, correct)) {
+  //   //   setAnswerColor("red");
+  //   // }
+  //   return answerColor;
+  // }
 
-  // List of background colors for the buttons
-  const color = ["blue", "green", "red"];
-
-  // UseState which will control the re-rendering of the button background color
-  const [answerColor, setAnswerColor] = useState(color[0]);
+  // Set the answers selected when it gets clicked
+  const [isAnswered, setisAnswered] = useState<boolean>(false);
 
   // Method which will control the state changes for the button background color
   // This will be called by each button individually when they are clicked
@@ -50,18 +47,19 @@ function AnswerButton({
   // If the correct answer is found, show the story by flipping the Dispatch setter flag
   // We need to limit the guess count to 3 so a score always shows up
   // We need to also stop multiple clicks on a button from registering
-  function handleClick(response: number) {
-    if (response == correct) {
-      setAnswerColor(color[1]);
+  function handleClick(response: number, correct: number) {
+    if (isAnswered || guesses == 4) return;
+
+    setisAnswered(true);
+
+    if (isCorrect(response, correct)) {
+      setAnswerColor("green");
       setShowStory(true);
-      if (guesses < 3 && answerColor != "green") {
-        setGuesses(guesses);
-      }
+      setTotalScore(totalScore + possibleScore);
+      setWasCorrectlyAnswered(true);
     } else {
-      setAnswerColor(color[2]);
-      if (guesses < 3 && answerColor != "red") {
-        setGuesses(guesses + 1);
-      }
+      setAnswerColor("red");
+      setGuesses(guesses + 1);
     }
   }
 
@@ -69,17 +67,31 @@ function AnswerButton({
   //   If it was, we'll disable all buttons; if not, it'll disable only the one button so it can't trigger again
   return (
     <>
-      <button
-        className={defineGridCell(gridCell)}
-        style={{
-          backgroundColor: answerColor,
-          margin: "5px",
-          padding: "15px",
-        }}
-        onClick={() => handleClick(gridCell)}
-      >
-        {answer}
-      </button>
+      {wasCorrectlyAnswered && (
+        <button
+          className={defineGridCell(gridCell)}
+          style={{
+            backgroundColor: answerColor,
+            margin: "5px",
+            padding: "15px",
+          }}
+        >
+          {answer}
+        </button>
+      )}
+      {!wasCorrectlyAnswered && (
+        <button
+          className={defineGridCell(gridCell)}
+          style={{
+            backgroundColor: answerColor,
+            margin: "5px",
+            padding: "15px",
+          }}
+          onClick={() => handleClick(gridCell, correct)}
+        >
+          {answer}
+        </button>
+      )}
     </>
   );
 }

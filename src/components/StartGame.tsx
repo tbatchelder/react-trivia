@@ -16,6 +16,15 @@ import { useState } from "react";
 import { QuestionType } from "../types";
 import Questions from "./Questions";
 
+// So, what we would like to happen is the following:
+//   1. Start at question 0
+//   2. Randomize the next question and keep track of the order
+//   3. Keep track of the score
+//   4. If a guess is wrong, reduce the score they COULD recieve: 100%. 50%, 25%, 0%
+//   5. Show the # out of # questions they need to answer
+//   6. Allow them to return to a previous question, show the guess(s) they made and allow them
+//      them to make more guesses from the choices remaining
+
 // Create a const to hold all of the details about each question
 // Oddly, now that the interface is removed, we need to tell the question list that the type is
 //   a list by adding [] to the type interface usage.
@@ -242,8 +251,13 @@ const questionList: QuestionType[] = [
 // This will hold the randomized list of questions with question 0 always being first.
 const randomQuestionList: number[] = [0];
 
+// Now that we are also only passing in one question at a time and not all questions,
+//   we'll need to way to keep track of what answers were selected for each question
+//   so that when Previous is used, it will show what buttons they already chose.
+// We need to set the type of value contained with the temp array holder - use : type or Array<type>
+const answersSelectedList: Array<Array<boolean>> = [];
+
 const createRandomQuesionList = () => {
-  // We need to set the type of value contained with the temp array holder - use : type or Array<type>
   // We want to start at 1 since we already have 0 in the list
   const tempStarter: number[] = [];
   for (let i = 1; i < questionList.length; i++) {
@@ -262,6 +276,13 @@ const createRandomQuesionList = () => {
   }
 };
 
+// Build up the selected answers list with booleans we'll use later to set state on the answer buttons
+const populateAnswersSelected = () => {
+  for (let i = 0; i < questionList.length; i++) {
+    answersSelectedList.push([false, false, false, false]);
+  }
+};
+
 // Now that the base is set up, we can start the game function
 function StartGame() {
   // Holds the state of the Start button - True = shown; False = hidden
@@ -269,11 +290,12 @@ function StartGame() {
   const [showme, setShowMe] = useState<boolean>(true);
 
   // When called by the Start button, flips the state of the Start button
-  function startGame() {
+  function onClickStartGame() {
     // Here, we'll call the function to randomize our questions since there seems to be no better place for it
     // Putting it anywhere else in this function actually causes it to be called multiple times
     // so, by tying it to the button click, it will only fire once like intended
     createRandomQuesionList();
+    populateAnswersSelected();
 
     setShowMe(false);
   }
@@ -282,7 +304,7 @@ function StartGame() {
     <>
       {/* The div style is used to control the visibility of the button by make it part of the DOM or not */}
       <div className="center" style={{ display: showme ? "block" : "none" }}>
-        <button className="start" onClick={() => startGame()}>
+        <button className="start" onClick={() => onClickStartGame()}>
           Start Game
         </button>
       </div>
@@ -291,10 +313,11 @@ function StartGame() {
         className="questionBox"
         style={{ display: showme ? "none" : "block" }}
       >
-        {/* Since the question list is now at this level, we need to pass it and the random list down */}
+        {/* Since the question list is now at this level, we need to pass it, the random list and selected answers down */}
         <Questions
           questionList={questionList}
           randomQuestionList={randomQuestionList}
+          answersSelectedList={answersSelectedList}
         />
       </div>
     </>

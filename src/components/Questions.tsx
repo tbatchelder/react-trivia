@@ -1,45 +1,34 @@
-// This component contains all of the details for the question:
-//   The question itself, the answers, the correct answer, the score, the story and the next/previous buttons
+// This component will control the entire question block and it's navigation
 
-// In order to re-render when changes are made, we need state
 import { useState } from "react";
-// In order to use the other components, we need to import them
 import Question from "./Question";
 import { QuestionType } from "../types";
 
-// So, what we would like to happen is the following:
-//   1. Start at question 0
-//   2. Randomized the next question and keep track of the order
-//   3. Keep track of the score
-//   4. If a guess is wrong, reduce the score they COULD recieve: 100%. 50%, 25%, 0%
-//   5. Show the # out of # questions they need to answer
-//   6. Allow them to return to a previous question and guess again
-//   7. If a previous question was guessed, show the answer they chose
-
-// To keep track of the order of questions visited, we need an Array to store the order
-// Store a random order of questions with 0 always being the start
-// We need to set the type of value contained with the temp array holder - use : type or Array<type>
-// const randomQuestionList: number[] = [0];
-// Retain the current index being viewed from the random list above
-let currentPos = 0;
+// Retain the current question being viewed from the random list
+let currentPos: number = 0;
 
 // This function needs to take the questions, break them down into their individual parts and then pass those parts
-// down to the AnswerBlock and AnswerButton components for futher breakdown
-// First, it will map out the objects for each index in the question array and pass them to questionDetails along with the index #
-// We will need to set the index # of the list as the key so React will synch everything
-// Then we pass the answers and the correct answer down to AnswerBlock
-//   this will require an interface on AnswerBlock so that it knows the Types of variables it should be accepting
+// down to the Questions and AnswerButton components for futher breakdown
+
+// After the refactoring, we will be using the currentPos to pass each question one at a time so that the whole
+//   section only re-renders once instead of every time
+
+// Bring in the question, random and answered list we created when the game started
 function Questions({
   questionList,
   randomQuestionList,
+  answersSelectedList,
 }: {
   questionList: QuestionType[];
   randomQuestionList: Array<number>;
+  answersSelectedList: Array<Array<boolean>>;
 }) {
   // Make sure all useState commands are first as React will not compile properly with them scattered about.
+
   // Used to display the active question
   // It does this by initially setting the first question to 0 and hence the state to 0
-  // It send this to the div container and changes the CSS from none to block if the index = the active index value
+  // So, instead of having every question built at once and being hidden by CSS,
+  //   we will only send one question at a time to the question block along with it's answers
   const [activeIndex, setActiveIndex] = useState<number>(0);
 
   // In order to update the score, we need to keep track of how many guesses are made per question
@@ -48,10 +37,14 @@ function Questions({
   const [totalScore, setTotalScore] = useState<number>(0);
 
   // Set the story to visible if the correct answer is quessed
+  // It's clearer to make this a boolean instead of using 0 and 1
   const [showStory, setShowStory] = useState<boolean>(false);
 
-  // This controls the Previous and Next buttons
-  // It will check to make sure the buttons remain within the length of the questions listing
+  const [wasCorrectlyAnswered, setWasCorrectlyAnswered] =
+    useState<boolean>(false);
+
+  // This component also controls the Previous and Next buttons
+  // It will check to make sure the questions remain within the length of the questions listing
   //   by updating the state of the question container object
 
   // For each new question, we'll have to make sure the story flag is flipped back so it is not displayed.
@@ -62,8 +55,7 @@ function Questions({
       setActiveIndex(randomQuestionList[currentPos]);
       setShowStory(false);
       setGuesses(0);
-      // this needs to move out of here and only update when the correct answer is guessed
-      // setTotalScore(totalScore + scoreUpdate);
+      setWasCorrectlyAnswered(false);
     }
   };
 
@@ -77,13 +69,21 @@ function Questions({
 
   return (
     <>
+      {/* We need to pass a lot down to the answer component were it will be actually changed */}
       <div className="questionGrid">
         <Question
+          currentPos={currentPos}
           question={questionList[activeIndex]}
           guesses={guesses}
           setGuesses={setGuesses}
+          possibleScore={questionList[activeIndex].score[guesses]}
+          totalScore={totalScore}
+          setTotalScore={setTotalScore}
           showStory={showStory}
           setShowStory={setShowStory}
+          answersSelectedList={answersSelectedList}
+          wasCorrectlyAnswered={wasCorrectlyAnswered}
+          setWasCorrectlyAnswered={setWasCorrectlyAnswered}
         />
         <div className="r4c2">
           <button className="previous" onClick={() => handlePrevious()}>
@@ -113,5 +113,3 @@ function Questions({
 }
 
 export default Questions;
-
-// questionList[activeIndex].score[guesses]
