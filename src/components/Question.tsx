@@ -1,6 +1,6 @@
 // This component will contain all of the answeer details which will pass down to the individual answeer area and individual buttons
 // Here, we need Dispatch to allow the passing in of a useState setter
-import { Dispatch, useState } from "react";
+import { Dispatch } from "react";
 import { SetStateAction } from "react";
 import AnswerButton from "./AnswerButton";
 import { QuestionType } from "../types";
@@ -20,9 +20,9 @@ function Question({
   setTotalScore,
   showStory,
   setShowStory,
-  answersSelectedList,
   wasCorrectlyAnswered,
   setWasCorrectlyAnswered,
+  answersSelectedList,
 }: {
   currentPos: number;
   question: QuestionType;
@@ -33,10 +33,11 @@ function Question({
   setTotalScore: Dispatch<SetStateAction<number>>;
   showStory: boolean;
   setShowStory: Dispatch<SetStateAction<boolean>>;
-  answersSelectedList: Array<Array<boolean>>;
   wasCorrectlyAnswered: boolean;
   setWasCorrectlyAnswered: Dispatch<SetStateAction<boolean>>;
+  answersSelectedList: Array<Array<boolean>>;
 }) {
+  console.log(answersSelectedList[currentPos]);
   return (
     <>
       <div className="question">{question.question}</div>
@@ -54,9 +55,9 @@ function Question({
           totalScore={totalScore}
           setTotalScore={setTotalScore}
           setShowStory={setShowStory}
-          answersSelected={answersSelectedList[currentPos]}
           wasCorrectlyAnswered={wasCorrectlyAnswered}
           setWasCorrectlyAnswered={setWasCorrectlyAnswered}
+          answersSelectedList={answersSelectedList}
         />
       ))}
       {showStory && <div className="r3">{question.story}</div>}

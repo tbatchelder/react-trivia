@@ -3,8 +3,11 @@
 import { useState } from "react";
 import { AnswerType } from "../types";
 import { isCorrect } from "../utils/helpers";
+// import { wasAnswered } from "../utils/helpers";
 
 function AnswerButton({
+  currentPos,
+  index,
   answer,
   gridCell,
   correct,
@@ -14,12 +17,19 @@ function AnswerButton({
   totalScore,
   setTotalScore,
   setShowStory,
-  answersSelected,
   wasCorrectlyAnswered,
   setWasCorrectlyAnswered,
-}: AnswerType) {
+  answersSelectedList,
+}: //
+AnswerType) {
   // UseState which will control the re-rendering of the button background color
   const [answerColor, setAnswerColor] = useState<string>("blue");
+
+  // Set the answers selected when it gets clicked
+  const [isAnswered, setisAnswered] = useState<boolean>(false);
+
+  const [selectedQuestion, setSelectedQuestion] =
+    useState<Array<Array<boolean>>>(answersSelectedList);
 
   // Method to determine the grid to place the button into so everything is laid out nicely
   // This will be called by the className on each individual button
@@ -29,17 +39,6 @@ function AnswerButton({
 
     return "answer r" + gridColumn + "c" + gridRow;
   }
-  console.log(answersSelected);
-  // function previouslyAnswered(bloop: Array<Array<boolean>>) {
-  //   // console.log(bloop[currentPos][index]);
-  //   // if (answersSelected[currentPos][index] && isCorrect(gridCell, correct)) {
-  //   //   setAnswerColor("red");
-  //   // }
-  //   return answerColor;
-  // }
-
-  // Set the answers selected when it gets clicked
-  const [isAnswered, setisAnswered] = useState<boolean>(false);
 
   // Method which will control the state changes for the button background color
   // This will be called by each button individually when they are clicked
@@ -52,6 +51,10 @@ function AnswerButton({
 
     setisAnswered(true);
 
+    updateQuestionStatus(currentPos, index);
+
+    // console.log(answersSelectedList[currentPos][0]);
+
     if (isCorrect(response, correct)) {
       setAnswerColor("green");
       setShowStory(true);
@@ -62,6 +65,24 @@ function AnswerButton({
       setGuesses(guesses + 1);
     }
   }
+
+  const updateQuestionStatus = (currentPos: number, index: number) => {
+    setSelectedQuestion((prevList) =>
+      prevList.map((innerArray, i) => {
+        if (i === currentPos) {
+          return innerArray.map((value, j) => {
+            if (j === index) {
+              return !value;
+            } else {
+              return value;
+            }
+          });
+        } else {
+          return innerArray;
+        }
+      })
+    );
+  };
 
   // Here we'll check to see if the button was answered correctly or not
   //   If it was, we'll disable all buttons; if not, it'll disable only the one button so it can't trigger again

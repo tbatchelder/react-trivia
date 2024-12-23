@@ -35,7 +35,7 @@ export interface AnswerType {
   totalScore: number;
   setTotalScore: Dispatch<SetStateAction<number>>;
   setShowStory: Dispatch<SetStateAction<boolean>>;
-  answersSelected: Array<boolean>;
   wasCorrectlyAnswered: boolean;
   setWasCorrectlyAnswered: Dispatch<SetStateAction<boolean>>;
+  answersSelectedList: Array<Array<boolean>>;
 }

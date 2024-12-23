@@ -6,4 +6,12 @@ export function isCorrect(response: number, correct: number) {
   }
 }
 
-export function wasAnswered() {}
+// export function wasAnswered(
+//   answersSelectedList: Array<Array<boolean>>,
+//   currentPos: number
+// ) {
+//   console.log(answersSelectedList[currentPos][0]);
+//   //if (answersSelectedList[currentPos][index]) {
+//   //     setAnswerColor("red");
+//   // }
+// }

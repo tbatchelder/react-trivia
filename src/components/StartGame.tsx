@@ -97,7 +97,7 @@ const questionList: QuestionType[] = [
   {
     id: 6,
     question:
-      "What name is given to the character shown in the game background?",
+      "What name is given to the transformed main character by the magician Schmendrick?",
     answers: [
       "The Lady Amalethia",
       "Princess Cadmine",
@@ -116,7 +116,7 @@ const questionList: QuestionType[] = [
     correct: 3,
     score: [50, 25, 12, 1],
     story:
-      "I read this many years ago. Great story about gods and swords with stange powers.",
+      "I read this many years ago. Great story about gods and swords with stange powers.  Each sword had a unique power...sometimes with unexpected side effects like 'you can't be struck by any weapon while weilding the sword, but you will die when there are no more enemies before you'.",
   },
   {
     id: 8,
@@ -190,7 +190,8 @@ const questionList: QuestionType[] = [
     ],
     correct: 0,
     score: [30, 15, 7, 1],
-    story: "Really liked this when it came out on tv years ago.",
+    story:
+      "Really liked this when it came out on tv years ago.  Haven't watched the whole series yet but it does sort of tell a story about a girl who finds out she is a princess of the moon and was hidden away to save her.",
   },
   {
     id: 15,
@@ -243,7 +244,8 @@ const questionList: QuestionType[] = [
     answers: ["Assallum", "Amaltheia", "Arboron", "Andrameda"],
     correct: 0,
     score: [100, 50, 25, 1],
-    story: "From 'The Bible of the Unicorn'. ",
+    story:
+      "From 'The Bible of the Unicorn'. Love this book; while it's not meant to be religious, it kind of is in that it tells how the world came to be and what the true purpose of unicorns are.",
   },
 ];
 
@@ -279,7 +281,7 @@ const createRandomQuesionList = () => {
 // Build up the selected answers list with booleans we'll use later to set state on the answer buttons
 const populateAnswersSelected = () => {
   for (let i = 0; i < questionList.length; i++) {
-    answersSelectedList.push([false, false, false, false]);
+    answersSelectedList.push([false, false, false, false, false]);
   }
 };
 

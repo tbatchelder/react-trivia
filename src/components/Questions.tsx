@@ -81,9 +81,9 @@ function Questions({
           setTotalScore={setTotalScore}
           showStory={showStory}
           setShowStory={setShowStory}
-          answersSelectedList={answersSelectedList}
           wasCorrectlyAnswered={wasCorrectlyAnswered}
           setWasCorrectlyAnswered={setWasCorrectlyAnswered}
+          answersSelectedList={answersSelectedList}
         />
         <div className="r4c2">
           <button className="previous" onClick={() => handlePrevious()}>
