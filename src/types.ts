@@ -37,5 +37,7 @@ export interface AnswerType {
   setShowStory: Dispatch<SetStateAction<boolean>>;
   wasCorrectlyAnswered: boolean;
   setWasCorrectlyAnswered: Dispatch<SetStateAction<boolean>>;
-  answersSelectedList: Array<Array<boolean>>;
+  answersSelectedList: Array<boolean>;
+  // answersSelectedList: Array<Array<boolean>>;
+  // questionsAnswered: Array<boolean>;
 }

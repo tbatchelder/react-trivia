@@ -20,7 +20,8 @@ function AnswerButton({
   wasCorrectlyAnswered,
   setWasCorrectlyAnswered,
   answersSelectedList,
-}: //
+}: // questionsAnswered,
+//
 AnswerType) {
   // UseState which will control the re-rendering of the button background color
   const [answerColor, setAnswerColor] = useState<string>("blue");
@@ -29,7 +30,7 @@ AnswerType) {
   const [isAnswered, setisAnswered] = useState<boolean>(false);
 
   const [selectedQuestion, setSelectedQuestion] =
-    useState<Array<Array<boolean>>>(answersSelectedList);
+    useState<boolean[]>(answersSelectedList);
 
   // Method to determine the grid to place the button into so everything is laid out nicely
   // This will be called by the className on each individual button
@@ -50,10 +51,10 @@ AnswerType) {
     if (isAnswered || guesses == 4) return;
 
     setisAnswered(true);
-
+    // If any button is clicked, set the 4th index to true to indicate that an answer was selected
+    // updateQuestionStatus(currentPos, 4);
+    // Update the actual button that was selected
     updateQuestionStatus(currentPos, index);
-
-    // console.log(answersSelectedList[currentPos][0]);
 
     if (isCorrect(response, correct)) {
       setAnswerColor("green");
@@ -66,33 +67,35 @@ AnswerType) {
     }
   }
 
-  const updateQuestionStatus = (currentPos: number, index: number) => {
-    setSelectedQuestion((prevList) =>
-      prevList.map((innerArray, i) => {
-        if (i === currentPos) {
-          return innerArray.map((value, j) => {
-            if (j === index) {
-              return !value;
-            } else {
-              return value;
-            }
-          });
-        } else {
-          return innerArray;
-        }
-      })
-    );
-  };
+  function updateQuestionStatus(currentPos: number, index: number) {
+    const tempList: Array<boolean> = answersSelectedList;
+    // let tempList: Array<Array<boolean>> = answersSelectedList;
+    // console.log(tempList);
+    tempList[currentPos * 4 + index] = true;
+    // console.log(tempList);
+    setSelectedQuestion(tempList);
+    console.log(answersSelectedList);
+  }
 
+  // function checkPreviously() {
+  // console.log(answersSelectedList[currentPos]);
+  // if (answersSelectedList[currentPos + index]) {
+  //   setAnswerColor("red");
+  // }
+  // }
+  // console.log(questionsAnswered, "hi");
+  // checkPreviously();
+  // console.log(answersSelectedList[0]);
   // Here we'll check to see if the button was answered correctly or not
   //   If it was, we'll disable all buttons; if not, it'll disable only the one button so it can't trigger again
   return (
     <>
-      {wasCorrectlyAnswered && (
+      {/* wasCorrectlyAnswered */}
+      {answersSelectedList[currentPos * 4 + index] && index != correct && (
         <button
           className={defineGridCell(gridCell)}
           style={{
-            backgroundColor: answerColor,
+            backgroundColor: "red",
             margin: "5px",
             padding: "15px",
           }}
@@ -100,7 +103,20 @@ AnswerType) {
           {answer}
         </button>
       )}
-      {!wasCorrectlyAnswered && (
+      {!answersSelectedList[currentPos * 4 + index] && index != correct && (
+        <button
+          className={defineGridCell(gridCell)}
+          style={{
+            backgroundColor: answerColor,
+            margin: "5px",
+            padding: "15px",
+          }}
+          onClick={() => handleClick(gridCell, correct)}
+        >
+          {answer}
+        </button>
+      )}
+      {!answersSelectedList[currentPos * 4 + index] && index == correct && (
         <button
           className={defineGridCell(gridCell)}
           style={{

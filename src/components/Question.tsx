@@ -4,6 +4,8 @@ import { Dispatch } from "react";
 import { SetStateAction } from "react";
 import AnswerButton from "./AnswerButton";
 import { QuestionType } from "../types";
+// import { wasAnswered } from "../utils/helpers";
+// import { useState } from "react";
 
 // The interface will tell the component what Type the variable should be that it is accepting
 
@@ -35,9 +37,14 @@ function Question({
   setShowStory: Dispatch<SetStateAction<boolean>>;
   wasCorrectlyAnswered: boolean;
   setWasCorrectlyAnswered: Dispatch<SetStateAction<boolean>>;
-  answersSelectedList: Array<Array<boolean>>;
+  answersSelectedList: Array<boolean>;
+  // answersSelectedList: Array<Array<boolean>>;
 }) {
-  console.log(answersSelectedList[currentPos]);
+  // console.log(wasAnswered(answersSelectedList, currentPos));
+  // const questionsAnswered = wasAnswered(answersSelectedList, currentPos);
+  // const [questionsAnswered, setQuestionsAnswered] = useState<Array<boolean>>(
+  //   wasAnswered(answersSelectedList, currentPos)
+  // );
   return (
     <>
       <div className="question">{question.question}</div>
@@ -58,6 +65,7 @@ function Question({
           wasCorrectlyAnswered={wasCorrectlyAnswered}
           setWasCorrectlyAnswered={setWasCorrectlyAnswered}
           answersSelectedList={answersSelectedList}
+          // questionsAnswered={questionsAnswered}
         />
       ))}
       {showStory && <div className="r3">{question.story}</div>}

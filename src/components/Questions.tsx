@@ -21,7 +21,8 @@ function Questions({
 }: {
   questionList: QuestionType[];
   randomQuestionList: Array<number>;
-  answersSelectedList: Array<Array<boolean>>;
+  answersSelectedList: Array<boolean>;
+  // answersSelectedList: Array<Array<boolean>>;
 }) {
   // Make sure all useState commands are first as React will not compile properly with them scattered about.
 
@@ -59,11 +60,19 @@ function Questions({
     }
   };
 
-  // The Previous button doesn't need to change anything.
+  // The Previous button now needs to update the possible score based upon the number of guesses made.
   const handlePrevious = () => {
     if (currentPos != 0) {
       currentPos -= 1;
       setActiveIndex(randomQuestionList[currentPos]);
+
+      let counter = 0;
+      for (let i = currentPos; i < currentPos + 4; i++) {
+        if (answersSelectedList[i]) {
+          counter += 1;
+        }
+      }
+      setGuesses(counter);
     }
   };
 

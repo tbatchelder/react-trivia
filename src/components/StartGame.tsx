@@ -257,7 +257,8 @@ const randomQuestionList: number[] = [0];
 //   we'll need to way to keep track of what answers were selected for each question
 //   so that when Previous is used, it will show what buttons they already chose.
 // We need to set the type of value contained with the temp array holder - use : type or Array<type>
-const answersSelectedList: Array<Array<boolean>> = [];
+// const answersSelectedList: Array<Array<boolean>> = [];
+const answersSelectedList: Array<boolean> = [];
 
 const createRandomQuesionList = () => {
   // We want to start at 1 since we already have 0 in the list
@@ -281,7 +282,10 @@ const createRandomQuesionList = () => {
 // Build up the selected answers list with booleans we'll use later to set state on the answer buttons
 const populateAnswersSelected = () => {
   for (let i = 0; i < questionList.length; i++) {
-    answersSelectedList.push([false, false, false, false, false]);
+    for (let j = 0; j < 4; j++) {
+      answersSelectedList.push(false);
+    }
+    // answersSelectedList.push([false, false, false, false]);
   }
 };
 
@@ -315,7 +319,7 @@ function StartGame() {
         className="questionBox"
         style={{ display: showme ? "none" : "block" }}
       >
-        {/* Since the question list is now at this level, we need to pass it, the random list and selected answers down */}
+        {/* Since the question list is now at this level, we need to pass it, the random list and previously selected answers down */}
         <Questions
           questionList={questionList}
           randomQuestionList={randomQuestionList}

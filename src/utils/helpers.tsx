@@ -10,8 +10,9 @@ export function isCorrect(response: number, correct: number) {
 //   answersSelectedList: Array<Array<boolean>>,
 //   currentPos: number
 // ) {
-//   console.log(answersSelectedList[currentPos][0]);
-//   //if (answersSelectedList[currentPos][index]) {
-//   //     setAnswerColor("red");
-//   // }
+//   // console.log(answersSelectedList[currentPos]);
+//   return answersSelectedList[currentPos];
+//   //   //if (answersSelectedList[currentPos][index]) {
+//   //   //     setAnswerColor("red");
+//   //   // }
 // }
