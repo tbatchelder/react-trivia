@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { AnswerType } from "../types";
 import { isCorrect } from "../utils/helpers";
-// import { wasAnswered } from "../utils/helpers";
 
 function AnswerButton({
   currentPos,
@@ -17,18 +16,15 @@ function AnswerButton({
   totalScore,
   setTotalScore,
   setShowStory,
-  wasCorrectlyAnswered,
-  setWasCorrectlyAnswered,
   answersSelectedList,
-}: // questionsAnswered,
-//
-AnswerType) {
-  // UseState which will control the re-rendering of the button background color
+}: AnswerType) {
+  // UseState which will control the button background color
   const [answerColor, setAnswerColor] = useState<string>("blue");
 
-  // Set the answers selected when it gets clicked
-  const [isAnswered, setisAnswered] = useState<boolean>(false);
-
+  // Usestate which will allow us to update the answers selected list as we haven't been able to find any other way
+  // to update this; every attempt has resulted in "I can't find the index of any inner list"
+  // So, while we do have the selectedQuestion varialbe, we are not using it as we are using the main list since attempts
+  //   to use this variable have not met with great success
   const [selectedQuestion, setSelectedQuestion] =
     useState<boolean[]>(answersSelectedList);
 
@@ -45,90 +41,97 @@ AnswerType) {
   // This will be called by each button individually when they are clicked
   // If the gridcell value matches the correct answer: green; otherwise: red
   // If the correct answer is found, show the story by flipping the Dispatch setter flag
-  // We need to limit the guess count to 3 so a score always shows up
-  // We need to also stop multiple clicks on a button from registering
+  // Reaction of the buttons is now controlled by switch cases which removed the handleClick call if it was clicked
   function handleClick(response: number, correct: number) {
-    if (isAnswered || guesses == 4) return;
-
-    setisAnswered(true);
     // If any button is clicked, set the 4th index to true to indicate that an answer was selected
-    // updateQuestionStatus(currentPos, 4);
+    updateQuestionStatus(currentPos, 4);
+
     // Update the actual button that was selected
     updateQuestionStatus(currentPos, index);
 
+    // Check to see if the button clicked is the correct one and update statuses as needed
     if (isCorrect(response, correct)) {
       setAnswerColor("green");
       setShowStory(true);
       setTotalScore(totalScore + possibleScore);
-      setWasCorrectlyAnswered(true);
     } else {
       setAnswerColor("red");
       setGuesses(guesses + 1);
     }
   }
 
+  // Update the status of the answerSelected main list
   function updateQuestionStatus(currentPos: number, index: number) {
     const tempList: Array<boolean> = answersSelectedList;
-    // let tempList: Array<Array<boolean>> = answersSelectedList;
-    // console.log(tempList);
-    tempList[currentPos * 4 + index] = true;
-    // console.log(tempList);
+    tempList[currentPos * 5 + index] = true;
     setSelectedQuestion(tempList);
-    console.log(answersSelectedList);
   }
-
-  // function checkPreviously() {
-  // console.log(answersSelectedList[currentPos]);
-  // if (answersSelectedList[currentPos + index]) {
-  //   setAnswerColor("red");
-  // }
-  // }
-  // console.log(questionsAnswered, "hi");
-  // checkPreviously();
-  // console.log(answersSelectedList[0]);
-  // Here we'll check to see if the button was answered correctly or not
-  //   If it was, we'll disable all buttons; if not, it'll disable only the one button so it can't trigger again
   return (
     <>
-      {/* wasCorrectlyAnswered */}
-      {answersSelectedList[currentPos * 4 + index] && index != correct && (
-        <button
-          className={defineGridCell(gridCell)}
-          style={{
-            backgroundColor: "red",
-            margin: "5px",
-            padding: "15px",
-          }}
-        >
-          {answer}
-        </button>
-      )}
-      {!answersSelectedList[currentPos * 4 + index] && index != correct && (
-        <button
-          className={defineGridCell(gridCell)}
-          style={{
-            backgroundColor: answerColor,
-            margin: "5px",
-            padding: "15px",
-          }}
-          onClick={() => handleClick(gridCell, correct)}
-        >
-          {answer}
-        </button>
-      )}
-      {!answersSelectedList[currentPos * 4 + index] && index == correct && (
-        <button
-          className={defineGridCell(gridCell)}
-          style={{
-            backgroundColor: answerColor,
-            margin: "5px",
-            padding: "15px",
-          }}
-          onClick={() => handleClick(gridCell, correct)}
-        >
-          {answer}
-        </button>
-      )}
+      {(() => {
+        switch (answersSelectedList[currentPos * 5 + 4]) {
+          case false:
+            return (
+              <button
+                className={defineGridCell(gridCell)}
+                style={{
+                  backgroundColor: answerColor,
+                  margin: "5px",
+                  padding: "15px",
+                }}
+                onClick={() => handleClick(gridCell, correct)}
+              >
+                {answer}
+              </button>
+            );
+          case true:
+            switch (answersSelectedList[currentPos * 5 + index]) {
+              case false:
+                return (
+                  <button
+                    className={defineGridCell(gridCell)}
+                    style={{
+                      backgroundColor: answerColor,
+                      margin: "5px",
+                      padding: "15px",
+                    }}
+                    onClick={() => handleClick(gridCell, correct)}
+                  >
+                    {answer}
+                  </button>
+                );
+              case true:
+                switch (gridCell == correct) {
+                  case false:
+                    return (
+                      <button
+                        className={defineGridCell(gridCell)}
+                        style={{
+                          backgroundColor: "red",
+                          margin: "5px",
+                          padding: "15px",
+                        }}
+                      >
+                        {answer}
+                      </button>
+                    );
+                  case true:
+                    return (
+                      <button
+                        className={defineGridCell(gridCell)}
+                        style={{
+                          backgroundColor: "green",
+                          margin: "5px",
+                          padding: "15px",
+                        }}
+                      >
+                        {answer}
+                      </button>
+                    );
+                }
+            }
+        }
+      })()}
     </>
   );
 }

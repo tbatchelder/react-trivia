@@ -1,17 +1,17 @@
 // This creates a Start Game button and then starts the game itself
 // Upon clicking, it will hide itself and display the first of the questions
 
-// Additionally, after the JoC refactoring session, new things came to light on how to build a React site
-// As part of that, we will re-work and move things around to reduce code further
-//    Therefore, the question list will be brought into here were it should render only once(?) I hope
+// Additionally, after the JoC refactoring session, new things came to light on how to build a React application
+// As part of that, we re-worked and moved things around to reduce code further
+//    Therefore, the question list will be brought into here were it be generated only once
 
 // Ok, the Question list was brought into here.  This will stop it from being re-rendered every time
 // a question is answered and will therefor remove the need to check if the randomization has been
 // done already.  Since the questions are here, the randomizer was also brought in so that it can
-// execute only once but still be passed down to lower component.
+// execute only once but still be passed down to lower components.
 
 // We'll need a state control for some actions so it gets imported
-// Since all of the interfaces were moved to types.ts, that also needs to be imported
+// Since all of the interfaces were moved to types.ts, they also need to be imported
 import { useState } from "react";
 import { QuestionType } from "../types";
 import Questions from "./Questions";
@@ -22,10 +22,11 @@ import Questions from "./Questions";
 //   3. Keep track of the score
 //   4. If a guess is wrong, reduce the score they COULD recieve: 100%. 50%, 25%, 0%
 //   5. Show the # out of # questions they need to answer
-//   6. Allow them to return to a previous question, show the guess(s) they made and allow them
-//      them to make more guesses from the choices remaining
+//   6. Show the score out of score they will recieve once they guess correctly
+//   7. Allow them to return to a previous question, show the guess(s) they made and allow them
+//      to make more guesses from the choices remaining
 
-// Create a const to hold all of the details about each question
+// Create a const to hold most of the details about each question
 // Oddly, now that the interface is removed, we need to tell the question list that the type is
 //   a list by adding [] to the type interface usage.
 const questionList: QuestionType[] = [
@@ -249,16 +250,9 @@ const questionList: QuestionType[] = [
   },
 ];
 
-// We also need to do the same thing here by telling it the list is an array of numbers
+// We also need to do the same thing with the randomizer list by telling it the list is an array of numbers
 // This will hold the randomized list of questions with question 0 always being first.
 const randomQuestionList: number[] = [0];
-
-// Now that we are also only passing in one question at a time and not all questions,
-//   we'll need to way to keep track of what answers were selected for each question
-//   so that when Previous is used, it will show what buttons they already chose.
-// We need to set the type of value contained with the temp array holder - use : type or Array<type>
-// const answersSelectedList: Array<Array<boolean>> = [];
-const answersSelectedList: Array<boolean> = [];
 
 const createRandomQuesionList = () => {
   // We want to start at 1 since we already have 0 in the list
@@ -279,13 +273,20 @@ const createRandomQuesionList = () => {
   }
 };
 
+// Now that we are also only passing in one question at a time and not all questions,
+//   we'll need a way to keep track of what answers were selected for each question
+//   so that when Previous is used, it will show what buttons they already chose.
+// We need to set the type of value contained with the temp array holder - use : type or Array<type>
+// NOTE: this was converted from a list of list to a single list as the double-mapping could not be figured out
+// NOTE: the array contains 5 values; 0 - 3 are the answers selected and 4 is whether or not any answers were selected
+const answersSelectedList: Array<boolean> = [];
+
 // Build up the selected answers list with booleans we'll use later to set state on the answer buttons
 const populateAnswersSelected = () => {
   for (let i = 0; i < questionList.length; i++) {
-    for (let j = 0; j < 4; j++) {
+    for (let j = 0; j < 5; j++) {
       answersSelectedList.push(false);
     }
-    // answersSelectedList.push([false, false, false, false]);
   }
 };
 
@@ -297,9 +298,9 @@ function StartGame() {
 
   // When called by the Start button, flips the state of the Start button
   function onClickStartGame() {
-    // Here, we'll call the function to randomize our questions since there seems to be no better place for it
-    // Putting it anywhere else in this function actually causes it to be called multiple times
-    // so, by tying it to the button click, it will only fire once like intended
+    // Here, we'll call the function to randomize our questions and build the selected list since there seems to be no better place for them
+    // Putting them anywhere else in this function actually causes them to be called multiple times
+    // so, by tying them to the button click, they will only fire once like intended
     createRandomQuesionList();
     populateAnswersSelected();
 
@@ -308,7 +309,7 @@ function StartGame() {
 
   return (
     <>
-      {/* The div style is used to control the visibility of the button by make it part of the DOM or not */}
+      {/* The div style is used to control the visibility of the button by making it part of the DOM or not */}
       <div className="center" style={{ display: showme ? "block" : "none" }}>
         <button className="start" onClick={() => onClickStartGame()}>
           Start Game

@@ -1,11 +1,9 @@
-// This component will contain all of the answeer details which will pass down to the individual answeer area and individual buttons
+// This component will contain all of the Question details which will pass down to the individual answer area and individual buttons
 // Here, we need Dispatch to allow the passing in of a useState setter
 import { Dispatch } from "react";
 import { SetStateAction } from "react";
 import AnswerButton from "./AnswerButton";
 import { QuestionType } from "../types";
-// import { wasAnswered } from "../utils/helpers";
-// import { useState } from "react";
 
 // The interface will tell the component what Type the variable should be that it is accepting
 
@@ -22,8 +20,6 @@ function Question({
   setTotalScore,
   showStory,
   setShowStory,
-  wasCorrectlyAnswered,
-  setWasCorrectlyAnswered,
   answersSelectedList,
 }: {
   currentPos: number;
@@ -35,16 +31,8 @@ function Question({
   setTotalScore: Dispatch<SetStateAction<number>>;
   showStory: boolean;
   setShowStory: Dispatch<SetStateAction<boolean>>;
-  wasCorrectlyAnswered: boolean;
-  setWasCorrectlyAnswered: Dispatch<SetStateAction<boolean>>;
   answersSelectedList: Array<boolean>;
-  // answersSelectedList: Array<Array<boolean>>;
 }) {
-  // console.log(wasAnswered(answersSelectedList, currentPos));
-  // const questionsAnswered = wasAnswered(answersSelectedList, currentPos);
-  // const [questionsAnswered, setQuestionsAnswered] = useState<Array<boolean>>(
-  //   wasAnswered(answersSelectedList, currentPos)
-  // );
   return (
     <>
       <div className="question">{question.question}</div>
@@ -62,10 +50,7 @@ function Question({
           totalScore={totalScore}
           setTotalScore={setTotalScore}
           setShowStory={setShowStory}
-          wasCorrectlyAnswered={wasCorrectlyAnswered}
-          setWasCorrectlyAnswered={setWasCorrectlyAnswered}
           answersSelectedList={answersSelectedList}
-          // questionsAnswered={questionsAnswered}
         />
       ))}
       {showStory && <div className="r3">{question.story}</div>}
